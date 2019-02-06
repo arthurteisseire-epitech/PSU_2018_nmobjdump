@@ -1,6 +1,6 @@
 ##
 ## EPITECH PROJECT, 2018
-## cpp_d01_2018
+## PSU_2018_nmobjdump
 ## File description:
 ## Makefile
 ##
@@ -11,14 +11,14 @@ DTESTS	=	tests/
 DSRC	=	src/
 DSRC_UT	=	tests/src/
 
-SRC		=	$(DSRC)file.c			\
+SRC		=	$(DSRC)main.c			\
 
 SRC_UT	=	$(DSRC_UT)tests_file.c			\
 
 CFLAGS	+=  -std=gnu11 -Wall -Wextra -I$(INC)
 LDFLAGS	=	-lcriterion
 OBJ		=	$(SRC:.c=.o)
-NAME	=	binary_name
+NAME	=	nm
 NAME_UT	=	units
 
 all: $(OBJ)
