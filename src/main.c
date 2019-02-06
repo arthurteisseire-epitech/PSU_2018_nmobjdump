@@ -12,15 +12,20 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 
+void printSymbols()
+{
+	printf("symbol table\n");
+}
+
 void printInfos(Elf64_Ehdr *elf)
 {
 	Elf64_Shdr *section_header_table = (void *)elf + elf->e_shoff;
 
 	for (int i = 0; i < elf->e_shnum; ++i) {
-		if (section_header_table->sh_type == SHT_SYMTAB) {
-			printf("symbol table\n");
+		if (section_header_table->sh_type == SHT_SYMTAB || section_header_table->sh_type == SHT_DYNSYM) {
+			printSymbols();
 		}
-		section_header_table += elf->e_shentsize;
+		section_header_table = (void *)section_header_table + elf->e_shentsize;
 	}
 }
 
