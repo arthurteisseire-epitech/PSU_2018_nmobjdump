@@ -14,15 +14,14 @@
 
 void printInfos(Elf64_Ehdr *elf)
 {
-	Elf64_Shdr *section_header_table = (void *)elf + elf->e_shstrndx;
+	Elf64_Shdr *section_header_table = (void *)elf + elf->e_shoff;
 
-	if (elf->e_shstrndx == SHN_UNDEF)
-		printf("No section table\n");
-	printf("Section Header Table : addr = %08lx, nb = %d\n", elf->e_shoff , elf->e_shnum);
-	char *section_name = (void *)elf + section_header_table->sh_name;
-	printf("%u\n", section_header_table->sh_name);
-
-	printf("%s\n", section_name);
+	for (int i = 0; i < elf->e_shnum; ++i) {
+		if (section_header_table->sh_type == SHT_SYMTAB) {
+			printf("symbol table\n");
+		}
+		section_header_table += elf->e_shentsize;
+	}
 }
 
 void mapFile(int fd, char *filename)
