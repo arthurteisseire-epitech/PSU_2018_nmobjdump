@@ -18,7 +18,7 @@ SRC_UT	=	$(DSRC_UT)tests_file.c			\
 CFLAGS	+=  -std=gnu11 -Wall -Wextra -I$(INC)
 LDFLAGS	=	-lcriterion
 OBJ		=	$(SRC:.c=.o)
-NAME	=	nm
+NAME	=	my_nm
 NAME_UT	=	units
 
 all: $(OBJ)
