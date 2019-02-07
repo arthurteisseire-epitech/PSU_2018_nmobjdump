@@ -12,41 +12,78 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 
-void printSymbols()
+static inline Elf64_Shdr *elf_sheader(Elf64_Ehdr *hdr)
 {
-	printf("symbol table\n");
+    return (Elf64_Shdr *) ((void *) hdr + hdr->e_shoff);
+}
+
+static inline Elf64_Shdr *elf_section(Elf64_Ehdr *hdr, int idx)
+{
+    return &elf_sheader(hdr)[idx];
+}
+
+static inline char *elf_str_table(Elf64_Ehdr *hdr)
+{
+    if (hdr->e_shstrndx == SHN_UNDEF)
+        return NULL;
+    return (void *) hdr + elf_section(hdr, hdr->e_shstrndx)->sh_offset;
+}
+
+static inline char *elf_find_string(Elf64_Ehdr *hdr, size_t offset)
+{
+    char *strtab = elf_str_table(hdr);
+
+    if (strtab == NULL)
+        return NULL;
+    return (strtab + offset);
+}
+
+static inline Elf64_Sym *elf_find_sym(Elf64_Ehdr *elf)
+{
+    Elf64_Shdr *current_section = elf_sheader(elf);
+
+    for (int i = 0; i < elf->e_shnum; ++i) {
+        if (current_section->sh_type == SHT_SYMTAB || current_section->sh_type == SHT_DYNSYM)
+            return ((Elf64_Sym *) current_section);
+        current_section = (void *) current_section + elf->e_shentsize;
+    }
+    return (NULL);
+}
+
+void printSymbols(char *section_string_table)
+{
+    if (section_string_table == NULL)
+        printf("NULL\n");
+    else
+        printf("%s\n", section_string_table);
+    printf("symbol table\n");
 }
 
 void printInfos(Elf64_Ehdr *elf)
 {
-	Elf64_Shdr *section_header_table = (void *)elf + elf->e_shoff;
+    Elf64_Sym *sym = elf_find_sym(elf);
 
-	for (int i = 0; i < elf->e_shnum; ++i) {
-		if (section_header_table->sh_type == SHT_SYMTAB || section_header_table->sh_type == SHT_DYNSYM) {
-			printSymbols();
-		}
-		section_header_table = (void *)section_header_table + elf->e_shentsize;
-	}
+    printSymbols(elf_find_string(elf, sym->st_name));
 }
 
 void mapFile(int fd, char *filename)
 {
-	struct stat s;
-	void *buf;
-	Elf64_Ehdr *elf;
+    struct stat s;
+    void *buf;
+    Elf64_Ehdr *elf;
 
-	fstat(fd , &s);
-	buf = mmap(NULL , s.st_size , PROT_READ , MAP_PRIVATE , fd , 0);
-	if (buf != MAP_FAILED) {
-		printf("mmap (%s) : %08lx\n", filename, buf);
-		elf = buf;
-		printInfos(elf);
-	} else {
-            perror("mmap");
-        }
+    fstat(fd, &s);
+    buf = mmap(NULL, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+    if (buf != MAP_FAILED) {
+        printf("mmap (%s) : %08lx\n", filename, buf);
+        elf = buf;
+        printInfos(elf);
+    } else {
+        perror("mmap");
+    }
 }
 
-int main(int ac , char **av)
+int main(int ac, char **av)
 {
     int fd;
 
@@ -54,7 +91,7 @@ int main(int ac , char **av)
         return (84);
     fd = open(av[1], O_RDONLY);
     if (fd != -1) {
-	    mapFile(fd, av[1]);
-	    close(fd);
+        mapFile(fd, av[1]);
+        close(fd);
     }
 }
