@@ -11,15 +11,11 @@
 #include <elf.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
+#include "nm.h"
 
-static inline Elf64_Shdr *elf_sheader(Elf64_Ehdr *hdr)
+static inline Elf64_Sym *elf_sym(Elf64_Shdr *hdr, int idx)
 {
-    return (Elf64_Shdr *) ((void *) hdr + hdr->e_shoff);
-}
-
-static inline Elf64_Shdr *elf_section(Elf64_Ehdr *hdr, int idx)
-{
-    return &elf_sheader(hdr)[idx];
+    return (Elf64_Sym *)&hdr[idx];
 }
 
 static inline char *elf_str_table(Elf64_Ehdr *hdr)
@@ -38,25 +34,30 @@ static inline char *elf_find_string(Elf64_Ehdr *hdr, size_t offset)
     return (strtab + offset);
 }
 
-static inline Elf64_Sym *elf_find_sym(Elf64_Ehdr *elf)
-{
-    Elf64_Shdr *current_section = elf_sheader(elf);
-
-    for (int i = 0; i < elf->e_shnum; ++i) {
-        if (current_section->sh_type == SHT_SYMTAB || current_section->sh_type == SHT_DYNSYM)
-            return ((Elf64_Sym *) current_section);
-        current_section = (void *) current_section + elf->e_shentsize;
-    }
-    return (NULL);
-}
-
-void printSymbols(char *section_string_table)
+static void printSymbols(char *section_string_table)
 {
     if (section_string_table == NULL)
         printf("NULL\n");
     else
         printf("%s\n", section_string_table);
     printf("symbol table\n");
+}
+
+static Elf64_Sym *elf_find_sym(Elf64_Ehdr *elf)
+{
+    Elf64_Shdr *current_section = elf_sheader(elf);
+
+    for (int i = 0; i < elf->e_shnum; ++i) {
+        if (current_section->sh_type == SHT_SYMTAB || current_section->sh_type == SHT_DYNSYM) {
+            printf("%lu\n", current_section->sh_size);
+            printf("%lu\n", sizeof(Elf64_Sym));
+            printf("%lu\n", current_section->sh_entsize);
+            printSymbols(elf_find_string(elf, elf_sym(current_section, 0)->st_name));
+            return ((Elf64_Sym *) current_section);
+        }
+        current_section = (void *) current_section + elf->e_shentsize;
+    }
+    return (NULL);
 }
 
 void printInfos(Elf64_Ehdr *elf)
