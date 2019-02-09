@@ -12,8 +12,9 @@
 #include <elf.h>
 
 typedef struct symbol_s {
+    Elf64_Addr value;
+    char type;
     char *name;
-    int value;
 } symbol_t;
 
 typedef struct nm_s {

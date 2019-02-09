@@ -18,6 +18,8 @@ void add_symbol(nm_t *nm, const Elf64_Ehdr *hdr, const Elf64_Shdr *current_secti
     if ((ELF64_ST_BIND(sym->st_info) & STT_OBJECT) || ELF64_ST_BIND(sym->st_info) & STT_FUNC) {
         nm->len++;
         nm->symbols = realloc(nm->symbols, nm->len * sizeof(symbol_t));
+        nm->symbols[nm->len - 1].value = sym->st_value;
+        nm->symbols[nm->len - 1].type = 'U';
         nm->symbols[nm->len - 1].name = name;
     }
 }
