@@ -16,6 +16,6 @@ Elf64_Shdr *get_section_header(const Elf64_Ehdr *hdr);
 Elf64_Shdr *get_section(const Elf64_Ehdr *hdr, int idx);
 
 static Elf64_Sym *get_symbol(const Elf64_Ehdr *hdr, int idx);
-Elf64_Sym *print_symbols(const Elf64_Ehdr *hdr);
+Elf64_Sym *print_file_symbols(const Elf64_Ehdr *hdr);
 
 #endif

@@ -14,7 +14,7 @@ int main(int ac, char **av)
     if (ac != 1) {
         hdr = file_to_hdr(av[1]);
         if (hdr) {
-            print_symbols(hdr);
+            print_file_symbols(hdr);
             return (0);
         }
     }
