@@ -18,22 +18,6 @@ static inline Elf64_Sym *elf_sym(Elf64_Shdr *hdr, int idx)
     return (Elf64_Sym *)&hdr[idx];
 }
 
-static inline char *elf_str_table(Elf64_Ehdr *hdr)
-{
-    if (hdr->e_shstrndx == SHN_UNDEF)
-        return NULL;
-    return (void *) hdr + elf_section(hdr, hdr->e_shstrndx)->sh_offset;
-}
-
-static inline char *elf_find_string(Elf64_Ehdr *hdr, size_t offset)
-{
-    char *strtab = elf_str_table(hdr);
-
-    if (strtab == NULL)
-        return NULL;
-    return (strtab + offset);
-}
-
 static void printSymbols(char *section_string_table)
 {
     if (section_string_table == NULL)

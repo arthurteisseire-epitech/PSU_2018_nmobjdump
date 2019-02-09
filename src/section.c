@@ -9,10 +9,10 @@
 
 Elf64_Shdr *elf_sheader(Elf64_Ehdr *hdr)
 {
-    return (Elf64_Shdr *) ((void *) hdr + hdr->e_shoff);
+    return ((Elf64_Shdr *) ((void *) hdr + hdr->e_shoff));
 }
 
 Elf64_Shdr *elf_section(Elf64_Ehdr *hdr, int idx)
 {
-    return &elf_sheader(hdr)[idx];
+    return (&elf_sheader(hdr)[idx]);
 }
