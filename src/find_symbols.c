@@ -29,7 +29,7 @@ static void add_section_symbols(nm_t *nm, const Elf64_Ehdr *hdr,
                                 const Elf64_Shdr *current_section)
 {
     for (size_t i = 0;
-         i < current_section->sh_size / current_section->sh_entsize; ++i)
+        i < current_section->sh_size / current_section->sh_entsize; ++i)
         add_symbol(nm, hdr, current_section, i);
 }
 
