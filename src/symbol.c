@@ -33,7 +33,7 @@ void printSymbolsSection(const Elf64_Ehdr *elf, const Elf64_Shdr *current_sectio
 
     for (int j = 0; j < current_section->sh_size / current_section->sh_entsize; ++j) {
         Elf64_Sym *sym = elf_sym((void *) elf + current_section->sh_offset, j);
-        if (ELF64_ST_BIND(sym->st_info) & STT_OBJECT) {
+        if ((ELF64_ST_BIND(sym->st_info) & STT_OBJECT) || ELF64_ST_BIND(sym->st_info) & STT_FUNC) {
             const char *name = (const char *) elf + strtab->sh_offset + sym->st_name;
             printf("symbol name : %s\n", name);
         }
