@@ -18,15 +18,24 @@ void check_elf_format(Elf64_Ehdr *hdr, const char *filename)
         error("%s: file format not recognized\n", filename);
 }
 
-int main(int ac, char **av)
+void exec(int ac, char **av)
 {
     Elf64_Ehdr *hdr;
 
-    if (ac != 1) {
-        hdr = file_to_hdr(av[1]);
-        check_elf_format(hdr, av[1]);
+    for (int i = 1; i < ac; ++i) {
+        if (ac >= 3)
+            printf("\n%s:\n", av[i]);
+        hdr = file_to_hdr(av[i]);
+        check_elf_format(hdr, av[i]);
         print_file_symbols(hdr);
-        return (0);
     }
-    return (84);
+}
+
+int main(int ac, char **av)
+{
+    if (ac == 1)
+        exec(2, (char *[]) {"", "a.out"});
+    else
+        exec(ac, av);
+    return (0);
 }
