@@ -33,4 +33,6 @@ void print_file_symbols(const Elf64_Ehdr *hdr);
 void add_symbol(nm_t *nm, const Elf64_Ehdr *hdr, const Elf64_Shdr *section,
                 size_t i);
 
+void error(const char *message, ...);
+
 #endif

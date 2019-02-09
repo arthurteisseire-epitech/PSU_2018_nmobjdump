@@ -12,6 +12,8 @@
 #include <sys/stat.h>
 #include <elf.h>
 #include <stdlib.h>
+#include <dirent.h>
+#include "nm.h"
 
 static Elf64_Ehdr *fd_to_hdr(int fd)
 {
@@ -26,16 +28,28 @@ static Elf64_Ehdr *fd_to_hdr(int fd)
     return (NULL);
 }
 
+static void check_directory(const char *filename)
+{
+    DIR *dir = opendir(filename);
+
+    if (dir) {
+        closedir(dir);
+        error("nm: Warning: '%s' is a directory\n", filename);
+    }
+}
+
 Elf64_Ehdr *file_to_hdr(const char *filename)
 {
-    int fd = open(filename, O_RDONLY);
+    int fd;
     Elf64_Ehdr *hdr;
 
-    if (fd == -1) {
-        printf("nm: '%s': No such file\n", filename);
-        exit(84);
-    }
+    check_directory(filename);
+    fd = open(filename, O_RDONLY);
+    if (fd == -1)
+        error("nm: '%s': No such file\n", filename);
     hdr = fd_to_hdr(fd);
     close(fd);
+    if (!hdr)
+        exit(84);
     return (hdr);
 }

@@ -16,6 +16,7 @@ SRC		=	$(DSRC)main.c			\
 			$(DSRC)find_symbols.c	\
 			$(DSRC)map_file.c		\
 			$(DSRC)utils.c			\
+			$(DSRC)print.c			\
 
 SRC_UT	=	$(DSRC_UT)tests_file.c			\
 
