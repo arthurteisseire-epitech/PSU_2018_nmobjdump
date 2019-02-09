@@ -16,3 +16,8 @@ Elf64_Shdr *get_section(const Elf64_Ehdr *hdr, int idx)
 {
     return (&get_section_header(hdr)[idx]);
 }
+
+Elf64_Sym *get_symbol(const Elf64_Ehdr *hdr, int idx)
+{
+    return (&((Elf64_Sym *) hdr)[idx]);
+}

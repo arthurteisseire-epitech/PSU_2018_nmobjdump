@@ -12,9 +12,10 @@ DSRC	=	src/
 DSRC_UT	=	tests/src/
 
 SRC		=	$(DSRC)main.c			\
-			$(DSRC)section.c		\
 			$(DSRC)symbol.c			\
+			$(DSRC)find_symbols.c	\
 			$(DSRC)map_file.c		\
+			$(DSRC)utils.c			\
 
 SRC_UT	=	$(DSRC_UT)tests_file.c			\
 

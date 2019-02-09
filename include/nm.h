@@ -14,8 +14,10 @@ Elf64_Ehdr *file_to_hdr(const char *filename);
 
 Elf64_Shdr *get_section_header(const Elf64_Ehdr *hdr);
 Elf64_Shdr *get_section(const Elf64_Ehdr *hdr, int idx);
+Elf64_Sym *get_symbol(const Elf64_Ehdr *hdr, int idx);
 
-static Elf64_Sym *get_symbol(const Elf64_Ehdr *hdr, int idx);
 Elf64_Sym *print_file_symbols(const Elf64_Ehdr *hdr);
+
+void print_symbol(const Elf64_Ehdr *hdr, const Elf64_Shdr *current_section, int j);
 
 #endif
