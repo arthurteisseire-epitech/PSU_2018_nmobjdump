@@ -10,7 +10,7 @@
 
 Elf64_Sym *elf_sym(Elf64_Shdr *hdr, int idx)
 {
-    return (Elf64_Sym *) &hdr[idx];
+    return ((Elf64_Sym *) &hdr[idx]);
 }
 
 Elf64_Sym *elf_find_sym(Elf64_Ehdr *elf)
