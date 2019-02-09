@@ -6,22 +6,42 @@
 */
 
 #include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include "nm.h"
 
-static void print_section_symbols(const Elf64_Ehdr *hdr, const Elf64_Shdr *current_section)
+int cmp(const void *a, const void *b)
 {
-    for (int j = 0; j < current_section->sh_size / current_section->sh_entsize; ++j)
-        print_symbol(hdr, current_section, j);
+    const symbol_t *symbol_a = a;
+    const symbol_t *symbol_b = b;
+
+    return (strcmp(symbol_a->name, symbol_b->name));
 }
 
-Elf64_Sym *print_file_symbols(const Elf64_Ehdr *hdr)
+static void print_symbols(nm_t *nm)
+{
+    for (int i = 0; i < nm->len; ++i)
+        printf("name : %s\n", nm->symbols[i].name);
+}
+
+static void add_section_symbols(nm_t *nm, const Elf64_Ehdr *hdr, const Elf64_Shdr *current_section)
+{
+    for (int i = 0; i < current_section->sh_size / current_section->sh_entsize; ++i)
+        add_symbol(nm, hdr, current_section, i);
+}
+
+void print_file_symbols(const Elf64_Ehdr *hdr)
 {
     Elf64_Shdr *current_section = get_section_header(hdr);
+    nm_t *nm = calloc(1, sizeof(nm_t));
 
     for (int i = 0; i < hdr->e_shnum; ++i) {
         if (current_section->sh_type == SHT_SYMTAB || current_section->sh_type == SHT_DYNSYM)
-            print_section_symbols(hdr, current_section);
+            add_section_symbols(nm, hdr, current_section);
         current_section = (void *) current_section + hdr->e_shentsize;
     }
-    return (NULL);
+    qsort(nm->symbols, nm->len, sizeof(symbol_t), cmp);
+    print_symbols(nm);
+    free(nm->symbols);
+    free(nm);
 }
