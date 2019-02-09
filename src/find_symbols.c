@@ -21,7 +21,7 @@ int cmp(const void *a, const void *b)
 static void print_symbols(nm_t *nm)
 {
     for (int i = 0; i < nm->len; ++i)
-        printf("name : %s\n", nm->symbols[i].name);
+        printf("%016x %s\n", nm->symbols[i].value, nm->symbols[i].name);
 }
 
 static void add_section_symbols(nm_t *nm, const Elf64_Ehdr *hdr, const Elf64_Shdr *current_section)
