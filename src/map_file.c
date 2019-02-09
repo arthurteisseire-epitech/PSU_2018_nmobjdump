@@ -11,6 +11,7 @@
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include <elf.h>
+#include <stdlib.h>
 
 static Elf64_Ehdr *fd_to_hdr(int fd)
 {
@@ -30,8 +31,10 @@ Elf64_Ehdr *file_to_hdr(const char *filename)
     int fd = open(filename, O_RDONLY);
     Elf64_Ehdr *hdr;
 
-    if (fd == -1)
-        return (NULL);
+    if (fd == -1) {
+        printf("nm: '%s': No such file\n", filename);
+        exit(84);
+    }
     hdr = fd_to_hdr(fd);
     close(fd);
     return (hdr);
