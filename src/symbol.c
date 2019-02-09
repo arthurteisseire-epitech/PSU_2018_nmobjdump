@@ -8,34 +8,35 @@
 #include <stdio.h>
 #include "nm.h"
 
-static Elf64_Sym *elf_sym(const Elf64_Ehdr *hdr, int idx)
+static Elf64_Sym *get_symbol(const Elf64_Ehdr *hdr, int idx)
 {
     return (&((Elf64_Sym *) hdr)[idx]);
 }
 
-static void printSymbolsSection(const Elf64_Ehdr *elf, const Elf64_Shdr *current_section)
+void print_symbol(const Elf64_Ehdr *hdr, const Elf64_Shdr *current_section, int j)
 {
-    Elf64_Shdr *strtab = elf_section(elf, current_section->sh_link);
-    Elf64_Sym *sym;
-    char *name;
+    Elf64_Shdr *strtab = get_section(hdr, current_section->sh_link);
+    Elf64_Sym *sym = get_symbol((void *) hdr + current_section->sh_offset, j);
+    char *name = (char *) hdr + strtab->sh_offset + sym->st_name;;
 
-    for (int j = 0; j < current_section->sh_size / current_section->sh_entsize; ++j) {
-        sym = elf_sym((void *) elf + current_section->sh_offset, j);
-        if ((ELF64_ST_BIND(sym->st_info) & STT_OBJECT) || ELF64_ST_BIND(sym->st_info) & STT_FUNC) {
-            name = (char *) elf + strtab->sh_offset + sym->st_name;
-            printf("symbol name : %s\n", name);
-        }
-    }
+    if ((ELF64_ST_BIND(sym->st_info) & STT_OBJECT) || ELF64_ST_BIND(sym->st_info) & STT_FUNC)
+        printf("symbol name : %s\n", name);
 }
 
-Elf64_Sym *elf_find_sym(Elf64_Ehdr *elf)
+static void print_symbol_section(const Elf64_Ehdr *hdr, const Elf64_Shdr *current_section)
 {
-    Elf64_Shdr *current_section = elf_sheader(elf);
+    for (int j = 0; j < current_section->sh_size / current_section->sh_entsize; ++j)
+        print_symbol(hdr, current_section, j);
+}
 
-    for (int i = 0; i < elf->e_shnum; ++i) {
+Elf64_Sym *print_symbols(const Elf64_Ehdr *hdr)
+{
+    Elf64_Shdr *current_section = get_section_header(hdr);
+
+    for (int i = 0; i < hdr->e_shnum; ++i) {
         if (current_section->sh_type == SHT_SYMTAB || current_section->sh_type == SHT_DYNSYM)
-            printSymbolsSection(elf, current_section);
-        current_section = (void *) current_section + elf->e_shentsize;
+            print_symbol_section(hdr, current_section);
+        current_section = (void *) current_section + hdr->e_shentsize;
     }
     return (NULL);
 }

@@ -10,10 +10,10 @@
 
 #include <elf.h>
 
-Elf64_Shdr *elf_sheader(const Elf64_Ehdr *hdr);
-Elf64_Shdr *elf_section(const Elf64_Ehdr *hdr, int idx);
+Elf64_Shdr *get_section_header(const Elf64_Ehdr *hdr);
+Elf64_Shdr *get_section(const Elf64_Ehdr *hdr, int idx);
 
-static Elf64_Sym *elf_sym(const Elf64_Ehdr *hdr, int idx);
-Elf64_Sym *elf_find_sym(Elf64_Ehdr *elf);
+static Elf64_Sym *get_symbol(const Elf64_Ehdr *hdr, int idx);
+Elf64_Sym *print_symbols(const Elf64_Ehdr *hdr);
 
 #endif

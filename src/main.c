@@ -8,44 +8,45 @@
 #include <unistd.h>
 #include <fcntl.h>
 #include <stdio.h>
-#include <elf.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
 #include "nm.h"
 
-void printInfos(Elf64_Ehdr *elf)
-{
-    Elf64_Sym *sym = elf_find_sym(elf);
-
-//    printSymbols(elf_find_string(elf, sym->st_name));
-}
-
-void mapFile(int fd, char *filename)
+static Elf64_Ehdr *fd_to_hdr(int fd)
 {
     struct stat s;
     void *buf;
-    Elf64_Ehdr *elf;
 
     fstat(fd, &s);
     buf = mmap(NULL, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-    if (buf != MAP_FAILED) {
-//        printf("mmap (%s) : %08lx\n", filename, buf);
-        elf = buf;
-        printInfos(elf);
-    } else {
-        perror("mmap");
-    }
+    if (buf != MAP_FAILED)
+        return (buf);
+    perror("mmap");
+    return (NULL);
+}
+
+static Elf64_Ehdr *file_to_hdr(const char *filename)
+{
+    int fd = open(filename, O_RDONLY);
+    Elf64_Ehdr *hdr;
+
+    if (fd == -1)
+        return (NULL);
+    hdr = fd_to_hdr(fd);
+    close(fd);
+    return (hdr);
 }
 
 int main(int ac, char **av)
 {
-    int fd;
+    Elf64_Ehdr *hdr;
 
-    if (ac == 1)
-        return (84);
-    fd = open(av[1], O_RDONLY);
-    if (fd != -1) {
-        mapFile(fd, av[1]);
-        close(fd);
+    if (ac != 1) {
+        hdr = file_to_hdr(av[1]);
+        if (hdr) {
+            print_symbols(hdr);
+            return (0);
+        }
     }
+    return (84);
 }

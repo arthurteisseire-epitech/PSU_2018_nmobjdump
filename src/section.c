@@ -7,12 +7,12 @@
 
 #include <elf.h>
 
-Elf64_Shdr *elf_sheader(const Elf64_Ehdr *hdr)
+Elf64_Shdr *get_section_header(const Elf64_Ehdr *hdr)
 {
     return ((Elf64_Shdr *) ((void *) hdr + hdr->e_shoff));
 }
 
-Elf64_Shdr *elf_section(const Elf64_Ehdr *hdr, int idx)
+Elf64_Shdr *get_section(const Elf64_Ehdr *hdr, int idx)
 {
-    return (&elf_sheader(hdr)[idx]);
+    return (&get_section_header(hdr)[idx]);
 }
