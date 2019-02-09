@@ -17,7 +17,7 @@ void printInfos(Elf64_Ehdr *elf)
 {
     Elf64_Sym *sym = elf_find_sym(elf);
 
-    printSymbols(elf_find_string(elf, sym->st_name));
+//    printSymbols(elf_find_string(elf, sym->st_name));
 }
 
 void mapFile(int fd, char *filename)
@@ -29,7 +29,7 @@ void mapFile(int fd, char *filename)
     fstat(fd, &s);
     buf = mmap(NULL, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
     if (buf != MAP_FAILED) {
-        printf("mmap (%s) : %08lx\n", filename, buf);
+//        printf("mmap (%s) : %08lx\n", filename, buf);
         elf = buf;
         printInfos(elf);
     } else {
