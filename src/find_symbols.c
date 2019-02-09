@@ -2,7 +2,7 @@
 ** EPITECH PROJECT, 2018
 ** PSU_2018_nmobjdump
 ** File description:
-** symbol.c
+** find_symbol.c
 */
 
 #include <stdio.h>
