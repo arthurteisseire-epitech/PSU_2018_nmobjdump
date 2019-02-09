@@ -14,6 +14,7 @@ DSRC_UT	=	tests/src/
 SRC		=	$(DSRC)main.c			\
 			$(DSRC)string_table.c	\
 			$(DSRC)section.c		\
+			$(DSRC)symbol.c			\
 
 SRC_UT	=	$(DSRC_UT)tests_file.c			\
 

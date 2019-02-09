@@ -16,4 +16,8 @@ Elf64_Shdr *elf_section(Elf64_Ehdr *hdr, int idx);
 char *elf_str_table(Elf64_Ehdr *hdr);
 char *elf_find_string(Elf64_Ehdr *hdr, size_t offset);
 
+Elf64_Sym *elf_sym(Elf64_Shdr *hdr, int idx);
+Elf64_Sym *elf_find_sym(Elf64_Ehdr *elf);
+void printSymbols(char *section_string_table);
+
 #endif
