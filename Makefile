@@ -5,9 +5,9 @@
 ## Project Name : linked_lists
 ##
 
-MODULES	=	nm		\
+MODULES	=	lib		\
+			nm		\
 			objdump	\
-			lib		\
 
 RULES	=	all			\
 			clean		\
