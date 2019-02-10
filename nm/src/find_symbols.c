@@ -11,16 +11,14 @@
 #include <ctype.h>
 #include "nm.h"
 
-int cmp(const void *a, const void *b)
+int cmp(const symbol_t *a, const symbol_t *b)
 {
-    const symbol_t *sa = a;
-    const symbol_t *sb = b;
     int it_a;
     int it_b;
 
-    for (it_a = 0; !isalpha(sa->name[it_a]); ++it_a);
-    for (it_b = 0; !isalpha(sb->name[it_b]); ++it_b);
-    return (strcasecmp(&sb->name[it_b], &sa->name[it_a]));
+    for (it_a = 0; !isalpha(a->name[it_a]); ++it_a);
+    for (it_b = 0; !isalpha(b->name[it_b]); ++it_b);
+    return (strcasecmp(&b->name[it_b], &a->name[it_a]));
 }
 
 static void print_symbols(nm_t *nm)
@@ -55,7 +53,8 @@ void print_file_symbols(const Elf64_Ehdr *hdr)
             add_section_symbols(nm, hdr, current_section);
         current_section = (void *) current_section + hdr->e_shentsize;
     }
-    qsort(nm->symbols, nm->len, sizeof(symbol_t), cmp);
+    qsort(nm->symbols, nm->len, sizeof(symbol_t),
+          (int (*)(const void *, const void *)) cmp);
     print_symbols(nm);
     free(nm->symbols);
     free(nm);
