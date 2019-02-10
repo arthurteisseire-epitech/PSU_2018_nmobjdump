@@ -11,10 +11,10 @@
 #include "nm.h"
 
 static const map_t types[] = {
+        {'B', SHT_NOBITS,   SHF_ALLOC | SHF_WRITE},
+        {'T', SHT_PROGBITS, SHF_ALLOC | SHF_EXECINSTR},
         {'D', SHT_PROGBITS, SHF_ALLOC | SHF_WRITE},
         {'D', SHT_DYNAMIC,  SHF_ALLOC | SHF_WRITE},
-        {'T', SHT_PROGBITS, SHF_ALLOC | SHF_EXECINSTR},
-        {'B', SHT_NOBITS,   SHF_ALLOC | SHF_WRITE},
         {'R', SHT_PROGBITS, SHF_ALLOC},
         {0, 0, 0}
 };
@@ -28,11 +28,10 @@ static char get_scope(const Elf64_Sym *sym, char c)
 
 static char section_type(const Elf64_Shdr *section)
 {
-    for (int i = 0; types[i].c; ++i) {
+    for (int i = 0; types[i].c; ++i)
         if (types[i].type == section->sh_type &&
             types[i].flag == section->sh_flags)
             return (types[i].c);
-    }
     return ('?');
 }
 
