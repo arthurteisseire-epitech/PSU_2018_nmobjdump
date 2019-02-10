@@ -27,8 +27,6 @@ static const map_t types[] = {
 
 char get_scope(const Elf64_Sym *sym, char c)
 {
-    if (c == 'w')
-        return (c);
     if (ELF32_ST_BIND(sym->st_info) == STB_LOCAL)
         return ((char) tolower(c));
     return (c);
