@@ -8,14 +8,19 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "nm.h"
 
 int cmp(const void *a, const void *b)
 {
-    const symbol_t *symbol_a = a;
-    const symbol_t *symbol_b = b;
+    const symbol_t *sa = a;
+    const symbol_t *sb = b;
+    int it_a;
+    int it_b;
 
-    return (strcmp(symbol_a->name, symbol_b->name));
+    for (it_a = 0; !isalpha(sa->name[it_a]); ++it_a);
+    for (it_b = 0; !isalpha(sb->name[it_b]); ++it_b);
+    return (strcasecmp(&sb->name[it_b], &sa->name[it_a]));
 }
 
 static void print_symbols(nm_t *nm)
