@@ -22,8 +22,6 @@ typedef struct nm_s {
     size_t len;
 } nm_t;
 
-Elf64_Ehdr *file_to_hdr(const char *filename);
-
 Elf64_Shdr *get_section_header(const Elf64_Ehdr *hdr);
 Elf64_Shdr *get_section(const Elf64_Ehdr *hdr, size_t idx);
 Elf64_Sym *get_symbol(const Elf64_Ehdr *hdr, size_t idx);
@@ -32,7 +30,5 @@ void print_file_symbols(const Elf64_Ehdr *hdr);
 
 void add_symbol(nm_t *nm, const Elf64_Ehdr *hdr, const Elf64_Shdr *section,
                 size_t i);
-
-void error(const char *message, ...);
 
 #endif

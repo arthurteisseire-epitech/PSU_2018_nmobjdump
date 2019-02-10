@@ -7,6 +7,7 @@
 
 MODULES	=	nm		\
 			objdump	\
+			lib		\
 
 RULES	=	all			\
 			clean		\
@@ -22,9 +23,11 @@ $(RULES):
 	done
 
 nm:
+	$(MAKE) --directory=lib
 	$(MAKE) --directory=nm
 
 objdump:
+	$(MAKE) --directory=lib
 	$(MAKE) --directory=objdump
 
 .PHONY: $(RULES) nm objdump
