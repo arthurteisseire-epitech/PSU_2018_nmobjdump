@@ -16,6 +16,5 @@ cmake-build-debug/
 CMakeFiles/
 
 # Project
-main.c
 my_nm
 my_objdump
