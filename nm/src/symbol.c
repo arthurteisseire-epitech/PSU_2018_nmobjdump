@@ -27,6 +27,8 @@ static const map_t types[] = {
 
 char get_scope(const Elf64_Sym *sym, char c)
 {
+    if (c == 'w')
+        return (c);
     if (ELF32_ST_BIND(sym->st_info) == STB_LOCAL)
         return ((char) tolower(c));
     return (c);
@@ -41,6 +43,8 @@ char get_char_type(const Elf64_Sym *sym, const Elf64_Shdr *section)
     if (ELF64_ST_BIND(sym->st_info) == STB_WEAK) {
         if (ELF64_ST_TYPE(sym->st_info) == STT_OBJECT)
             return ('V');
+        if (sym->st_shndx == SHN_UNDEF)
+            return ('w');
         return ('W');
     }
     for (int i = 0; types[i].c; ++i) {

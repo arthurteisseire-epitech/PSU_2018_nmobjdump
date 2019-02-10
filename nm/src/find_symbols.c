@@ -15,10 +15,14 @@ int cmp(const symbol_t *a, const symbol_t *b)
 {
     int it_a;
     int it_b;
+    int res;
 
     for (it_a = 0; !isalpha(a->name[it_a]); ++it_a);
     for (it_b = 0; !isalpha(b->name[it_b]); ++it_b);
-    return (strcasecmp(&b->name[it_b], &a->name[it_a]));
+    res = strcasecmp(&b->name[it_b], &a->name[it_a]);
+    if (res == 0)
+        return (it_a < it_b);
+    return (res);
 }
 
 static void print_symbols(nm_t *nm)
