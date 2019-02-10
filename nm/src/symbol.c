@@ -11,12 +11,18 @@
 #include "nm.h"
 
 static const map_t types[] = {
-        {'B', SHT_NOBITS,   SHF_ALLOC | SHF_WRITE},
-        {'T', SHT_PROGBITS, SHF_ALLOC | SHF_EXECINSTR},
-        {'D', SHT_PROGBITS, SHF_ALLOC | SHF_WRITE},
-        {'D', SHT_DYNAMIC,  SHF_ALLOC | SHF_WRITE},
+        {'B', SHT_NOBITS,   SHF_ALLOC + SHF_WRITE},
+        {'T', SHT_PROGBITS, SHF_ALLOC + SHF_EXECINSTR},
+        {'T', SHT_SYMTAB,   SHF_ALLOC + SHF_EXECINSTR},
+        {'T', SHT_DYNSYM,   SHF_ALLOC + SHF_EXECINSTR},
+        {'T', SHT_DYNAMIC,  SHF_ALLOC + SHF_EXECINSTR},
+        {'T', SHT_STRTAB,   SHF_ALLOC + SHF_EXECINSTR},
+        {'T', SHT_DYNAMIC,  SHF_ALLOC},
+        {'T', SHT_DYNAMIC, 0},
+        {'D', SHT_PROGBITS, SHF_ALLOC + SHF_WRITE},
+        {'D', SHT_DYNAMIC,  SHF_ALLOC + SHF_WRITE},
         {'R', SHT_PROGBITS, SHF_ALLOC},
-        {0, 0, 0}
+        {0, 0,             0},
 };
 
 static char get_scope(const Elf64_Sym *sym, char c)
