@@ -25,14 +25,24 @@ static const map_t types[] = {
         {0, 0, 0}
 };
 
-char get_scope(const Elf64_Sym *sym, char c)
+static char get_scope(const Elf64_Sym *sym, char c)
 {
     if (ELF32_ST_BIND(sym->st_info) == STB_LOCAL)
         return ((char) tolower(c));
     return (c);
 }
 
-char get_char_type(const Elf64_Sym *sym, const Elf64_Shdr *section)
+static char section_type(const Elf64_Shdr *section)
+{
+    for (int i = 0; types[i].c; ++i) {
+        if (types[i].type == section->sh_type &&
+            types[i].flag == section->sh_flags)
+            return (types[i].c);
+    }
+    return ('?');
+}
+
+static char get_char_type(const Elf64_Sym *sym, const Elf64_Shdr *section)
 {
     if (sym->st_shndx == SHN_COMMON)
         return ('C');
@@ -45,12 +55,7 @@ char get_char_type(const Elf64_Sym *sym, const Elf64_Shdr *section)
     }
     if (sym->st_shndx == SHN_UNDEF)
         return ('U');
-    for (int i = 0; types[i].c; ++i) {
-        if (types[i].type == section->sh_type &&
-            types[i].flag == section->sh_flags)
-            return (types[i].c);
-    }
-    return ('?');
+    return (section_type(section));
 }
 
 void add_symbol(nm_t *nm, const Elf64_Ehdr *hdr, const Elf64_Shdr *section,
