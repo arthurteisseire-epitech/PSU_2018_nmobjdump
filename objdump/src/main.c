@@ -6,20 +6,22 @@
 */
 
 #include <elf.h>
+#include <stdio.h>
 #include "lib.h"
 
-static void print_file_header(const Elf64_Ehdr *hdr)
+static void print_file_header(const Elf64_Ehdr *hdr, const char *filename)
 {
-    
+    printf("%s\n", filename);
 }
 
 static void exec(int ac, const char **av)
 {
     Elf64_Ehdr *hdr;
 
-    for (int i = 0; i < ac; ++i) {
+    for (int i = 1; i < ac; ++i) {
         hdr = file_to_hdr("objdump", av[i]);
-        print_file_header(hdr);
+        check_elf_format(hdr, av[i]);
+        print_file_header(hdr, av[i]);
     }
 }
 
