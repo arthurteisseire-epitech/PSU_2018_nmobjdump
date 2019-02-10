@@ -10,12 +10,6 @@
 #include <ctype.h>
 #include "nm.h"
 
-typedef struct map_s {
-    char c;
-    unsigned type;
-    unsigned flag;
-} map_t;
-
 static const map_t types[] = {
         {'D', SHT_PROGBITS, SHF_ALLOC | SHF_WRITE},
         {'D', SHT_DYNAMIC,  SHF_ALLOC | SHF_WRITE},

@@ -22,6 +22,12 @@ typedef struct nm_s {
     size_t len;
 } nm_t;
 
+typedef struct map_s {
+    char c;
+    unsigned type;
+    unsigned flag;
+} map_t;
+
 Elf64_Shdr *get_section_header(const Elf64_Ehdr *hdr);
 Elf64_Shdr *get_section(const Elf64_Ehdr *hdr, size_t idx);
 Elf64_Sym *get_symbol(const Elf64_Ehdr *hdr, size_t idx);
