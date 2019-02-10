@@ -36,8 +36,6 @@ char get_scope(const Elf64_Sym *sym, char c)
 
 char get_char_type(const Elf64_Sym *sym, const Elf64_Shdr *section)
 {
-    if (sym->st_shndx == SHN_UNDEF)
-        return ('U');
     if (sym->st_shndx == SHN_COMMON)
         return ('C');
     if (ELF64_ST_BIND(sym->st_info) == STB_WEAK) {
@@ -47,6 +45,8 @@ char get_char_type(const Elf64_Sym *sym, const Elf64_Shdr *section)
             return ('w');
         return ('W');
     }
+    if (sym->st_shndx == SHN_UNDEF)
+        return ('U');
     for (int i = 0; types[i].c; ++i) {
         if (types[i].type == section->sh_type &&
             types[i].flag == section->sh_flags)
