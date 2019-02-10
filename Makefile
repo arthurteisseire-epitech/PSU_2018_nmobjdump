@@ -5,7 +5,8 @@
 ## Project Name : linked_lists
 ##
 
-MODULES	=	nm	\
+MODULES	=	nm		\
+			objdump	\
 
 RULES	=	all			\
 			clean		\
@@ -23,4 +24,7 @@ $(RULES):
 nm:
 	$(MAKE) --directory=nm
 
-.PHONY: $(RULES) nm
+objdump:
+	$(MAKE) --directory=objdump
+
+.PHONY: $(RULES) nm objdump
