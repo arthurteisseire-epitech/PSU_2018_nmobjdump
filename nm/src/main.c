@@ -20,7 +20,8 @@ void exec(int ac, char **av)
             printf("\n%s:\n", av[i]);
         hdr = file_to_hdr("nm", av[i]);
         check_elf_format(hdr, av[i]);
-        print_file_symbols(hdr);
+        if (!print_file_symbols(hdr))
+            printf("nm: %s: no symbols\n", av[i]);
     }
 }
 

@@ -9,6 +9,7 @@
 #define PSU_2018_NMOBJDUMP_NM_H
 
 #include <stddef.h>
+#include <stdbool.h>
 #include <elf.h>
 
 typedef struct symbol_s {
@@ -32,7 +33,7 @@ Elf64_Shdr *get_section_header(const Elf64_Ehdr *hdr);
 Elf64_Shdr *get_section(const Elf64_Ehdr *hdr, size_t idx);
 Elf64_Sym *get_symbol(const Elf64_Ehdr *hdr, size_t idx);
 
-void print_file_symbols(const Elf64_Ehdr *hdr);
+bool print_file_symbols(const Elf64_Ehdr *hdr);
 
 void add_symbol(nm_t *nm, const Elf64_Ehdr *hdr, const Elf64_Shdr *section,
                 size_t i);

@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <ctype.h>
+#include <stddef.h>
 #include "nm.h"
 
 static int my_strcmp(const char *s1, const char *s2)
@@ -62,10 +63,11 @@ static void add_section_symbols(nm_t *nm, const Elf64_Ehdr *hdr,
         add_symbol(nm, hdr, current_section, i);
 }
 
-void print_file_symbols(const Elf64_Ehdr *hdr)
+bool print_file_symbols(const Elf64_Ehdr *hdr)
 {
     Elf64_Shdr *current_section = get_section_header(hdr);
     nm_t *nm = calloc(1, sizeof(nm_t));
+    bool is_symbols;
 
     for (size_t i = 0; i < hdr->e_shnum; ++i) {
         if (current_section->sh_type == SHT_SYMTAB)
@@ -76,5 +78,7 @@ void print_file_symbols(const Elf64_Ehdr *hdr)
           (int (*)(const void *, const void *)) cmp);
     print_symbols(nm);
     free(nm->symbols);
+    is_symbols = nm->len != 0;
     free(nm);
+    return (is_symbols);
 }
