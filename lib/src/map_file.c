@@ -29,14 +29,16 @@ static Elf64_Ehdr *fd_to_hdr(int fd)
     return (NULL);
 }
 
-static void check_directory(const char *prog, const char *filename)
+static int is_dir(const char *prog, const char *filename)
 {
     DIR *dir = opendir(filename);
 
     if (dir) {
         closedir(dir);
         error("%s: Warning: '%s' is a directory\n", prog, filename);
+        return (1);
     }
+    return (0);
 }
 
 Elf64_Ehdr *file_to_hdr(const char *prog, const char *filename)
@@ -44,21 +46,23 @@ Elf64_Ehdr *file_to_hdr(const char *prog, const char *filename)
     int fd;
     Elf64_Ehdr *hdr;
 
-    check_directory(prog, filename);
+    if (is_dir(prog, filename))
+        return (NULL);
     fd = open(filename, O_RDONLY);
-    if (fd == -1)
+    if (fd == -1) {
         error("%s: '%s': No such file\n", prog, filename);
+        return (NULL);
+    }
     hdr = fd_to_hdr(fd);
     close(fd);
-    if (!hdr)
-        exit(84);
     return (hdr);
 }
 
-void check_elf_format(Elf64_Ehdr *hdr, const char *filename)
+int check_elf_format(Elf64_Ehdr *hdr, const char *filename)
 {
     const char magic[] = {0x7f, 'E', 'L', 'F'};
 
     if (memcmp(hdr->e_ident, magic, 4) != 0)
-        error("%s: file format not recognized\n", filename);
+        return (error("%s: file format not recognized\n", filename));
+    return (0);
 }

@@ -9,12 +9,12 @@
 #include <stdarg.h>
 #include <stdlib.h>
 
-void error(const char *message, ...)
+int error(const char *message, ...)
 {
     va_list ap;
 
     va_start(ap, message);
     vfprintf(stdout, message, ap);
     va_end(ap);
-    exit(84);
+    return (84);
 }
