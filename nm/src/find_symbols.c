@@ -20,16 +20,23 @@ int cmp(const void *a, const void *b)
 
 static void print_symbols(nm_t *nm)
 {
-    for (size_t i = 0; i < nm->len; ++i)
-        printf("%016x %c %s\n", (unsigned) nm->symbols[i].value,
-               nm->symbols[i].type, nm->symbols[i].name);
+    for (size_t i = 0; i < nm->len; ++i) {
+        if (nm->symbols[i].value)
+            printf("%016x %c %s\n", (unsigned) nm->symbols[i].value,
+                   nm->symbols[i].type, nm->symbols[i].name);
+        else
+            printf("%18c %s\n", nm->symbols[i].type, nm->symbols[i].name);
+    }
 }
 
 static void add_section_symbols(nm_t *nm, const Elf64_Ehdr *hdr,
                                 const Elf64_Shdr *current_section)
 {
-    for (size_t i = 0;
-        i < current_section->sh_size / current_section->sh_entsize; ++i)
+    size_t nb_symbols = 0;
+
+    if (current_section->sh_entsize != 0)
+        nb_symbols = current_section->sh_size / current_section->sh_entsize;
+    for (size_t i = 0; i < nb_symbols; ++i)
         add_symbol(nm, hdr, current_section, i);
 }
 
@@ -39,8 +46,7 @@ void print_file_symbols(const Elf64_Ehdr *hdr)
     nm_t *nm = calloc(1, sizeof(nm_t));
 
     for (size_t i = 0; i < hdr->e_shnum; ++i) {
-        if (current_section->sh_type == SHT_SYMTAB ||
-            current_section->sh_type == SHT_DYNSYM)
+        if (current_section->sh_type == SHT_SYMTAB)
             add_section_symbols(nm, hdr, current_section);
         current_section = (void *) current_section + hdr->e_shentsize;
     }
