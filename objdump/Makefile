@@ -8,10 +8,13 @@
 CC		=	gcc
 INC		=	include/
 DSRC	=	src/
+DHEADER	=	$(DSRC)header/
 DLIB	=	../lib/
 LIBS	=	-L$(DLIB) -lelf
 
-SRC		=	$(DSRC)main.c			\
+SRC		=	$(DSRC)main.c				\
+			$(DSRC)find_string.c		\
+			$(DSRC)sections.c			\
 
 CFLAGS	+=  -std=gnu11 -Wall -Wextra -I$(INC) -I$(DLIB)include
 LDFLAGS	=	-lcriterion

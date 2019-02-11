@@ -5,32 +5,30 @@
 ** main.c
 */
 
-#include <elf.h>
 #include <stdio.h>
+#include "objdump.h"
 #include "lib.h"
 
-static void print_file_header(const Elf64_Ehdr *hdr, const char *filename)
-{
-    printf("%s\n", filename);
-}
-
-static void exec(int ac, const char **av)
+static int exec(int ac, const char **av)
 {
     Elf64_Ehdr *hdr;
+    int status = 0;
 
     for (int i = 1; i < ac; ++i) {
         hdr = file_to_hdr("objdump", av[i]);
-        check_elf_format(hdr, av[i]);
-        print_file_header(hdr, av[i]);
+        if (!hdr || check_elf_format(hdr, av[i]) == 84) {
+            status = 84;
+            continue;
+        }
+        print_sections(hdr);
     }
+    return (status);
 }
 
 int main(int ac, const char *av[])
 {
 
     if (ac == 1)
-        exec(2, (const char *[]) {"", "a.out"});
-    else
-        exec(ac, av);
-    return (0);
+        return (exec(2, (const char *[]) {"", "a.out"}));
+    return (exec(ac, av));
 }
