@@ -20,9 +20,23 @@ static bool is_section_printable(const Elf64_Shdr *current_section)
             current_section->sh_size != 0);
 }
 
+static void print_column(const unsigned char *section, size_t idx)
+{
+    printf("%02x", section[idx]);
+}
+
 void print_section(Elf64_Ehdr *hdr, Elf64_Shdr *shdr)
 {
-    printf("%s\n", find_string(hdr, shdr->sh_name));
+    const unsigned char *section = (void *) hdr + shdr->sh_offset;
+
+    printf("\n%s\n", find_string(hdr, shdr->sh_name));
+    for (size_t i = 0; i < shdr->sh_size; i++) {
+        print_column(section, i);
+        if ((i + 1) % 4 == 0)
+            printf(" ");
+        if ((i + 1) % 16 == 0)
+            printf("\n");
+    }
 }
 
 void print_sections(Elf64_Ehdr *hdr)
