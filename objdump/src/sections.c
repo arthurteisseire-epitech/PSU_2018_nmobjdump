@@ -23,4 +23,3 @@ void print_sections(Elf64_Ehdr *hdr)
         current_section = (void *) current_section + hdr->e_shentsize;
     }
 }
-
