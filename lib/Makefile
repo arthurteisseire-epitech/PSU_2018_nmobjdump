@@ -11,6 +11,7 @@ DSRC	=	src/
 
 SRC	=		$(DSRC)print.c			\
 			$(DSRC)map_file.c		\
+			$(DSRC)utils.c			\
 
 CFLAGS	+=	-Wall -W -Wextra -I$(INC)
 LDFLAGS	=	-lcriterion

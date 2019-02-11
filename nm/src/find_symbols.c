@@ -11,6 +11,7 @@
 #include <ctype.h>
 #include <stddef.h>
 #include "nm.h"
+#include "lib.h"
 
 static int my_strcmp(const char *s1, const char *s2)
 {

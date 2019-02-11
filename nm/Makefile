@@ -14,7 +14,6 @@ LIBS	=	-L$(DLIB) -lelf
 SRC		=	$(DSRC)main.c			\
 			$(DSRC)symbol.c			\
 			$(DSRC)find_symbols.c	\
-			$(DSRC)utils.c			\
 
 CFLAGS	+=  -std=gnu11 -Wall -Wextra -I$(INC) -I$(DLIB)include
 LDFLAGS	=	-lcriterion

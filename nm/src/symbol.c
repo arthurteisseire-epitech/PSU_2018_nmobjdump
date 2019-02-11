@@ -9,6 +9,7 @@
 #include <stdlib.h>
 #include <ctype.h>
 #include "nm.h"
+#include "lib.h"
 
 static const map_t types[] = {
         {'B', SHT_NOBITS,   SHF_ALLOC + SHF_WRITE},
