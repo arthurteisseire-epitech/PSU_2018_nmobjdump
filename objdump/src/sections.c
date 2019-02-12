@@ -56,13 +56,13 @@ void print_section(Elf64_Ehdr *hdr, Elf64_Shdr *shdr)
             printf(" ");
         printf("%02x", section[i]);
         ++count;
-        if ((i + 1) % 16 == 0) {
+        if (i == shdr->sh_size - 1) {
+            print_sides(section, count, i);
+        } else if ((i + 1) % 16 == 0) {
             print_sides(section, count, i);
             printf("%04x", (unsigned)i + 1);
             count = 0;
         }
-        if (i == shdr->sh_size - 1)
-            print_sides(section, count, i);
     }
 }
 
