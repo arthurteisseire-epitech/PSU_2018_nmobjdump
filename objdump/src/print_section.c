@@ -28,7 +28,7 @@ void print_sides(const unsigned char *section, size_t count, size_t i)
 {
     size_t nb_spaces = (((16 - count) * 2) + (16 - count) / 4);
 
-    for (size_t j = 0; j < nb_spaces; ++j)
+    for (size_t j = 0; j < nb_spaces + 1; ++j)
         printf(" ");
     print_ascci(&section[i], count - 1);
 }
