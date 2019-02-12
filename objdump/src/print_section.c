@@ -40,7 +40,7 @@ void print_section(Elf64_Ehdr *hdr, Elf64_Shdr *shdr)
     size_t count = 0;
 
     printf("Contents of section %s:\n", find_string(hdr, shdr->sh_name));
-    printf("%04x", off);
+    printf(" %04x", off);
     for (size_t i = 0; i < shdr->sh_size; i++) {
         if (i % 4 == 0)
             printf(" ");
@@ -50,7 +50,7 @@ void print_section(Elf64_Ehdr *hdr, Elf64_Shdr *shdr)
             print_sides(section, count, i);
         } else if ((i + 1) % 16 == 0) {
             print_sides(section, count, i);
-            printf("%04x", off + 1);
+            printf(" %04x", off + 1);
             count = 0;
         }
         ++off;
