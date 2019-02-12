@@ -54,6 +54,10 @@ static char get_char_type(const Elf64_Sym *sym, const Elf64_Shdr *section)
     }
     if (sym->st_shndx == SHN_UNDEF)
         return ('U');
+    if (section->sh_type == SHT_FINI_ARRAY)
+        return ('T');
+    if (section->sh_type == SHT_INIT_ARRAY)
+        return ('T');
     return (section_type(section));
 }
 
