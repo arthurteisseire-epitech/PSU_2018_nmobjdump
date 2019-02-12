@@ -21,7 +21,6 @@ void print_ascci(const unsigned char *p, size_t neg_off)
         else
             printf(".");
     }
-    printf("\n");
 }
 
 void print_sides(const unsigned char *section, size_t count, size_t i)
@@ -31,6 +30,9 @@ void print_sides(const unsigned char *section, size_t count, size_t i)
     for (size_t j = 0; j < nb_spaces + 1; ++j)
         printf(" ");
     print_ascci(&section[i], count - 1);
+    for (size_t j = 0; j < 16 - (count - 1); ++j)
+        printf(" ");
+    printf("\n");
 }
 
 void print_section(Elf64_Ehdr *hdr, Elf64_Shdr *shdr)
