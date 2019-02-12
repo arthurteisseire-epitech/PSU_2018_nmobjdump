@@ -7,6 +7,7 @@
 
 #include <stdio.h>
 #include <stdbool.h>
+#include <ctype.h>
 #include "objdump.h"
 #include "lib.h"
 
@@ -21,17 +22,30 @@ static bool is_section_printable(const Elf64_Shdr *current_section)
 }
 
 
+void print_ascci(const unsigned char *p)
+{
+    for (int i = 0; i < 16; ++i) {
+        if (isprint(p[i]))
+            printf("%c", p[i]);
+        else
+            printf(".");
+    }
+}
+
 void print_section(Elf64_Ehdr *hdr, Elf64_Shdr *shdr)
 {
     const unsigned char *section = (void *) hdr + shdr->sh_offset;
 
-    printf("\n\nContents of section %s:", find_string(hdr, shdr->sh_name));
+    printf("\n\nContents of section %s:\n ", find_string(hdr, shdr->sh_name));
     for (size_t i = 0; i < shdr->sh_size; i++) {
         if (i % 4 == 0)
             printf(" ");
-        if (i % 16 == 0)
-            printf("\n ");
         printf("%02x", section[i]);
+        if ((i + 1) % 16 == 0) {
+            printf(" ");
+            print_ascci(&section[i] - 16 + 1);
+            printf("\n ");
+        }
     }
 }
 
