@@ -20,6 +20,7 @@ static int exec(int ac, const char **av)
             status = 84;
             continue;
         }
+        print_header(hdr, av[i]);
         print_sections(hdr);
     }
     return (status);
