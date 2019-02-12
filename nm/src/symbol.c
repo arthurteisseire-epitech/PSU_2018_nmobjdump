@@ -12,23 +12,20 @@
 #include "lib.h"
 
 static const map_t types[] = {
-        {'B', SHT_NOBITS,   SHF_ALLOC + SHF_WRITE},
-        {'T', SHT_PROGBITS, SHF_ALLOC + SHF_EXECINSTR},
-        {'T', SHT_SYMTAB,   SHF_ALLOC + SHF_EXECINSTR},
-        {'T', SHT_DYNSYM,   SHF_ALLOC + SHF_EXECINSTR},
-        {'T', SHT_DYNAMIC,  SHF_ALLOC + SHF_EXECINSTR},
-        {'T', SHT_STRTAB,   SHF_ALLOC + SHF_EXECINSTR},
-        {'T', SHT_DYNAMIC,  SHF_ALLOC},
-        {'T', SHT_DYNAMIC, 0},
-        {'D', SHT_PROGBITS, SHF_ALLOC + SHF_WRITE},
-        {'D', SHT_DYNAMIC,  SHF_ALLOC + SHF_WRITE},
-        {'R', SHT_PROGBITS, SHF_ALLOC},
-        {0, 0,             0},
+        {'B', SHT_NOBITS,        SHF_ALLOC + SHF_WRITE},
+        {'T', SHT_PROGBITS,      SHF_ALLOC + SHF_EXECINSTR},
+        {'T', SHT_FINI_ARRAY,    SHF_ALLOC + SHF_WRITE},
+        {'T', SHT_INIT_ARRAY,    SHF_ALLOC + SHF_WRITE},
+        {'T', SHT_PREINIT_ARRAY, SHF_ALLOC + SHF_WRITE},
+        {'D', SHT_PROGBITS,      SHF_ALLOC + SHF_WRITE},
+        {'D', SHT_DYNAMIC,       SHF_ALLOC + SHF_WRITE},
+        {'R', SHT_PROGBITS,      SHF_ALLOC},
+        {0, 0, 0},
 };
 
 static char get_scope(const Elf64_Sym *sym, char c)
 {
-    if (ELF32_ST_BIND(sym->st_info) == STB_LOCAL)
+    if (ELF64_ST_BIND(sym->st_info) == STB_LOCAL)
         return ((char) tolower(c));
     return (c);
 }
@@ -44,6 +41,8 @@ static char section_type(const Elf64_Shdr *section)
 
 static char get_char_type(const Elf64_Sym *sym, const Elf64_Shdr *section)
 {
+    if (sym->st_shndx == SHN_ABS)
+        return ('A');
     if (sym->st_shndx == SHN_COMMON)
         return ('C');
     if (ELF64_ST_BIND(sym->st_info) == STB_WEAK) {
