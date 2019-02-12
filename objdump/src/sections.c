@@ -25,12 +25,20 @@ static bool is_section_printable(const Elf64_Shdr *current_section)
 void print_ascci(const unsigned char *p, size_t neg_off)
 {
     p -= neg_off;
+    printf(" ");
     for (size_t i = 0; i < neg_off + 1; ++i) {
         if (isprint(p[i]))
             printf("%c", p[i]);
         else
             printf(".");
     }
+    printf("\n");
+}
+
+void print_spaces(size_t nb_spaces)
+{
+    for (size_t i = 0; i < nb_spaces; ++i)
+        printf(" ");
 }
 
 void print_section(Elf64_Ehdr *hdr, Elf64_Shdr *shdr)
@@ -45,9 +53,8 @@ void print_section(Elf64_Ehdr *hdr, Elf64_Shdr *shdr)
         printf("%02x", section[i]);
         ++count;
         if ((i + 1) % 16 == 0 || i == shdr->sh_size - 1) {
-            printf(" ");
+            print_spaces(((16 - count) * 2) + (16 - count) / 4);
             print_ascci(&section[i], count - 1);
-            printf("\n");
             count = 0;
         }
     }
