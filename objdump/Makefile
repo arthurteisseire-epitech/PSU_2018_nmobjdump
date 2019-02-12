@@ -14,7 +14,7 @@ LIBS	=	-L$(DLIB) -lelf
 
 SRC		=	$(DSRC)main.c				\
 			$(DSRC)find_string.c		\
-			$(DSRC)sections.c			\
+			$(DSRC)scan_sections.c		\
 			$(DSRC)print_section.c		\
 
 CFLAGS	+=  -std=gnu11 -Wall -Wextra -I$(INC) -I$(DLIB)include
