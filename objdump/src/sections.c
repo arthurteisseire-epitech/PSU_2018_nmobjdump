@@ -35,10 +35,13 @@ void print_ascci(const unsigned char *p, size_t neg_off)
     printf("\n");
 }
 
-void print_spaces(size_t nb_spaces)
+void print_sides(const unsigned char *section, size_t count, size_t i)
 {
-    for (size_t i = 0; i < nb_spaces; ++i)
+    size_t nb_spaces = (((16 - count) * 2) + (16 - count) / 4);
+
+    for (size_t j = 0; j < nb_spaces; ++j)
         printf(" ");
+    print_ascci(&section[i], count - 1);
 }
 
 void print_section(Elf64_Ehdr *hdr, Elf64_Shdr *shdr)
@@ -47,16 +50,19 @@ void print_section(Elf64_Ehdr *hdr, Elf64_Shdr *shdr)
     size_t count = 0;
 
     printf("Contents of section %s:\n", find_string(hdr, shdr->sh_name));
+    printf("%04x", 0);
     for (size_t i = 0; i < shdr->sh_size; i++) {
         if (i % 4 == 0)
             printf(" ");
         printf("%02x", section[i]);
         ++count;
-        if ((i + 1) % 16 == 0 || i == shdr->sh_size - 1) {
-            print_spaces(((16 - count) * 2) + (16 - count) / 4);
-            print_ascci(&section[i], count - 1);
+        if ((i + 1) % 16 == 0) {
+            print_sides(section, count, i);
+            printf("%04x", (unsigned)i + 1);
             count = 0;
         }
+        if (i == shdr->sh_size - 1)
+            print_sides(section, count, i);
     }
 }
 
