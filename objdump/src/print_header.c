@@ -7,8 +7,9 @@
 
 #include <stdio.h>
 #include "objdump.h"
+#include "lib.h"
 
-static const map_t map[] = {
+static const map_t machines[] = {
         {EM_X86_64,      "i386:x86-64"},
         {EM_NONE,        "None"},
         {EM_M32,         "WE32100"},
@@ -30,19 +31,51 @@ static const map_t map[] = {
         {0, NULL}
 };
 
+static const flags_t type_flags[] = {
+        {ET_DYN,  DYNAMIC + D_PAGED},
+        {ET_EXEC, EXEC_P + D_PAGED},
+        {ET_REL,  HAS_RELOC},
+        {0, 0},
+};
+
 static const char *get_machine_name(Elf64_Half machine)
 {
-    for (int i = 0; map[i].name; ++i)
-        if (machine == map[i].byte)
-            return (map[i].name);
-    return map[0].name;
+    for (int i = 0; machines[i].name; ++i)
+        if (machine == machines[i].byte)
+            return (machines[i].name);
+    return machines[0].name;
+}
+
+unsigned int sym_flags(const Elf64_Ehdr *hdr)
+{
+    Elf64_Shdr *shdr = get_section_header(hdr);
+
+    for (int i = 0; i < hdr->e_shnum; ++i)
+        if (shdr[i].sh_type == SHT_SYMTAB)
+            return (HAS_SYMS);
+    return (NO_FLAGS);
+}
+
+unsigned int get_flags(const Elf64_Ehdr *hdr)
+{
+    unsigned flags = NO_FLAGS;
+
+    for (int i = 0; type_flags[i].flag; i++)
+        if (hdr->e_type == type_flags[i].type) {
+            flags = type_flags[i].flag;
+            break;
+        }
+    flags += sym_flags(hdr);
+    return (flags);
 }
 
 void print_header(const Elf64_Ehdr *hdr, const char *filename)
 {
+    unsigned flags = get_flags(hdr);
+
     printf("\n%s:     file format elf64-x86-64\n", filename);
     printf("architecture: %s, ", get_machine_name(hdr->e_machine));
-    printf("flags 0x%08x:\n", hdr->e_flags);
+    printf("flags 0x%08x:\n", flags);
     printf("flags here...\n");
     printf("start address 0x%016lx\n\n", hdr->e_entry);
 }
