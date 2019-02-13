@@ -58,15 +58,10 @@ unsigned int sym_flags(const Elf64_Ehdr *hdr)
 
 unsigned int get_flags(const Elf64_Ehdr *hdr)
 {
-    unsigned flags = NO_FLAGS;
-
     for (int i = 0; type_flags[i].flag; i++)
-        if (hdr->e_type == type_flags[i].type) {
-            flags = type_flags[i].flag;
-            break;
-        }
-    flags += sym_flags(hdr);
-    return (flags);
+        if (hdr->e_type == type_flags[i].type)
+            return (type_flags[i].flag + sym_flags(hdr));
+    return (NO_FLAGS);
 }
 
 void print_header(const Elf64_Ehdr *hdr, const char *filename)
