@@ -38,6 +38,30 @@ static const flags_t type_flags[] = {
         {0, 0},
 };
 
+static const map_t flag_names[] = {
+        {D_PAGED,    "D_PAGED"},
+        {DYNAMIC,    "DYNAMIC"},
+        {HAS_LOCALS, "HAS_LOCAL"},
+        {HAS_SYMS,   "HAS_SYMS"},
+        {HAS_DEBUG,  "HAS_DEBUG"},
+        {EXEC_P,     "EXEC_P"},
+        {HAS_RELOC,  "HAS_RELOC"},
+        {NO_FLAGS,   "NO_FLAGS"},
+        {0, NULL},
+};
+
+static void print_flags(unsigned int flags, unsigned int i, char *comma)
+{
+    if (flag_names[i].name) {
+        if (flags && flags >= flag_names[i].byte) {
+            print_flags(flags - flag_names[i].byte, i + 1, ", ");
+            printf("%s%s", flag_names[i].name, comma);
+        } else {
+            print_flags(flags, i + 1, comma);
+        }
+    }
+}
+
 static const char *get_machine_name(Elf64_Half machine)
 {
     for (int i = 0; machines[i].name; ++i)
@@ -73,7 +97,7 @@ void print_header(const Elf64_Ehdr *hdr, const char *filename)
     printf("\n%s:     file format elf64-x86-64\n", filename);
     printf("architecture: %s, ", get_machine_name(hdr->e_machine));
     printf("flags 0x%08x:\n", flags);
-    printf("flags here...\n");
-    printf("start address 0x%016lx\n\n", hdr->e_entry);
+    print_flags(flags, 0, "");
+    printf("\nstart address 0x%016lx\n\n", hdr->e_entry);
 }
 
