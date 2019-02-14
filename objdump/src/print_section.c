@@ -30,7 +30,7 @@ void print_sides(const unsigned char *section, size_t count, size_t i)
     for (size_t j = 0; j < nb_spaces + 1; ++j)
         printf(" ");
     print_ascci(&section[i], count - 1);
-    for (size_t j = 0; j < 16 - (count - 1); ++j)
+    for (size_t j = 0; j < 16 - count; ++j)
         printf(" ");
     printf("\n");
 }
