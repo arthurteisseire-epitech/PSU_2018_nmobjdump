@@ -7,10 +7,24 @@
 
 #include <stdbool.h>
 #include <elf.h>
+#include <string.h>
 #include "lib.h"
 
-int check_supported(Elf32_Ehdr *hdr)
+int check_file_format(Elf64_Ehdr *hdr, const char *filename)
 {
+    const char magic[] = {0x7f, 'E', 'L', 'F'};
+
+    if (memcmp(hdr->e_ident, magic, 4) != 0)
+        return (error("%s: file format not recognized\n", filename));
+    return (0);
+}
+
+int check_supported(Elf64_Ehdr *hdr, const char *filename)
+{
+    int status = check_file_format(hdr, filename);
+
+    if (status != 0)
+        return (status);
     if (hdr->e_ident[EI_CLASS] == ELFCLASSNONE)
         return (error("Unknown architecture\n"));
     if (hdr->e_ident[EI_DATA] == ELFDATANONE)

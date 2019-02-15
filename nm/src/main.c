@@ -20,7 +20,7 @@ int exec(int ac, char **av)
         if (ac >= 3)
             printf("\n%s:\n", av[i]);
         hdr = file_to_hdr("nm", av[i]);
-        if (!hdr || check_elf_format(hdr, av[i]) == 84) {
+        if (!hdr || check_supported(hdr, NULL) == 84) {
             status = 84;
             continue;
         }

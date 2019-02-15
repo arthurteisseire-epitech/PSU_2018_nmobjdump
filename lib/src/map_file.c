@@ -57,12 +57,3 @@ Elf64_Ehdr *file_to_hdr(const char *prog, const char *filename)
     close(fd);
     return (hdr);
 }
-
-int check_elf_format(Elf64_Ehdr *hdr, const char *filename)
-{
-    const char magic[] = {0x7f, 'E', 'L', 'F'};
-
-    if (memcmp(hdr->e_ident, magic, 4) != 0)
-        return (error("%s: file format not recognized\n", filename));
-    return (0);
-}
