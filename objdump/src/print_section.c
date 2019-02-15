@@ -44,23 +44,21 @@ void print_byte(const unsigned char *section, size_t i)
 
 void print_section(const Elf64_Ehdr *hdr, size_t idx)
 {
-    unsigned off = (unsigned) get_section(hdr, idx)->sh_addr;
     unsigned char *section = (void *) hdr + get_section(hdr, idx)->sh_offset;
     const char *section_name = find_string(hdr, get_section(hdr, idx)->sh_name);
     size_t count = 0;
 
     printf("Contents of section %s:\n", section_name);
-    printf(" %04x", off);
-    for (size_t i = 0; i < get_section(hdr, idx)->sh_size; ++i) {
+    printf(" %04x", (unsigned) get_section(hdr, idx)->sh_addr);
+    for (unsigned i = 0; i < get_section(hdr, idx)->sh_size; ++i) {
         print_byte(section, i);
         ++count;
         if (i == get_section(hdr, idx)->sh_size - 1) {
             print_sides(section, count, i);
         } else if ((i + 1) % 16 == 0) {
             print_sides(section, count, i);
-            printf(" %04x", off + 1);
+            printf(" %04x", i + (unsigned) get_section(hdr, idx)->sh_addr + 1);
             count = 0;
         }
-        ++off;
     }
 }
