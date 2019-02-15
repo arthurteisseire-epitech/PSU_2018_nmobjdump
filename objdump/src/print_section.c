@@ -23,7 +23,7 @@ void print_ascci(const unsigned char *p, size_t neg_off)
     }
 }
 
-static size_t calc_bytes_on_raw(unsigned i)
+static size_t bytes_on_raw(unsigned i)
 {
     ++i;
     if (i % 16 == 0)
@@ -33,13 +33,13 @@ static size_t calc_bytes_on_raw(unsigned i)
 
 void print_sides(const unsigned char *section, unsigned i)
 {
-    const size_t bytes_on_raw = calc_bytes_on_raw(i);
-    const size_t missing_bytes_on_raw = 16 - bytes_on_raw;
+    const size_t bor = bytes_on_raw(i);
+    const size_t missing_bytes_on_raw = 16 - bor;
     size_t nb_spaces = missing_bytes_on_raw * 2 + missing_bytes_on_raw / 4;
 
     for (size_t j = 0; j < nb_spaces + 1; ++j)
         printf(" ");
-    print_ascci(&section[i], bytes_on_raw - 1);
+    print_ascci(&section[i], bor - 1);
     for (size_t j = 0; j < missing_bytes_on_raw; ++j)
         printf(" ");
     printf("\n");
@@ -64,7 +64,7 @@ void print_section(const void *hdr, size_t idx)
         print_byte(section, i);
         if (i == tot_bytes - 1) {
             print_sides(section, i);
-        } else if ((i + 1) % 16 == 0) {
+        } else if (bytes_on_raw(i) == 16) {
             print_sides(section, i);
             printf(" %04x", i + (unsigned) get_section(hdr, idx)->sh_addr + 1);
         }
