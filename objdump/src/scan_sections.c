@@ -11,7 +11,7 @@
 #include "objdump.h"
 #include "lib.h"
 
-static bool is_section_printable(Elf64_Ehdr *hdr, const Elf64_Shdr *shdr)
+static bool is_section_printable(const Elf64_Ehdr *hdr, const Elf64_Shdr *shdr)
 {
     return (shdr->sh_type != SHT_NOBITS &&
             shdr->sh_type != SHT_NULL &&
@@ -24,11 +24,7 @@ static bool is_section_printable(Elf64_Ehdr *hdr, const Elf64_Shdr *shdr)
 
 void print_sections(Elf64_Ehdr *hdr)
 {
-    Elf64_Shdr *current_section = get_section_header(hdr);
-
-    for (size_t i = 0; i < hdr->e_shnum; ++i) {
-        if (is_section_printable(hdr, current_section))
-            print_section(hdr, current_section);
-        current_section = (void *) current_section + hdr->e_shentsize;
-    }
+    for (size_t i = 0; i < hdr->e_shnum; ++i)
+        if (is_section_printable(hdr, get_section(hdr, i)))
+            print_section(hdr, get_section(hdr, i));
 }
