@@ -23,14 +23,15 @@ void print_ascci(const unsigned char *p, size_t neg_off)
     }
 }
 
-void print_sides(const unsigned char *section, size_t count, size_t i)
+void print_sides(const unsigned char *section, size_t bytes_on_raw, size_t i)
 {
-    size_t nb_spaces = (((16 - count) * 2) + (16 - count) / 4);
+    const size_t missing_bytes_on_raw = 16 - bytes_on_raw;
+    size_t nb_spaces = missing_bytes_on_raw * 2 + missing_bytes_on_raw / 4;
 
     for (size_t j = 0; j < nb_spaces + 1; ++j)
         printf(" ");
-    print_ascci(&section[i], count - 1);
-    for (size_t j = 0; j < 16 - count; ++j)
+    print_ascci(&section[i], bytes_on_raw - 1);
+    for (size_t j = 0; j < missing_bytes_on_raw; ++j)
         printf(" ");
     printf("\n");
 }
@@ -46,19 +47,19 @@ void print_section(const void *hdr, size_t idx)
 {
     const unsigned char *section = hdr + get_section(hdr, idx)->sh_offset;
     const char *section_name = find_string(hdr, get_section(hdr, idx)->sh_name);
-    size_t count = 0;
+    size_t bytes_on_raw = 0;
 
     printf("Contents of section %s:\n", section_name);
     printf(" %04x", (unsigned) get_section(hdr, idx)->sh_addr);
     for (unsigned i = 0; i < get_section(hdr, idx)->sh_size; ++i) {
         print_byte(section, i);
-        ++count;
+        ++bytes_on_raw;
         if (i == get_section(hdr, idx)->sh_size - 1) {
-            print_sides(section, count, i);
+            print_sides(section, bytes_on_raw, i);
         } else if ((i + 1) % 16 == 0) {
-            print_sides(section, count, i);
+            print_sides(section, bytes_on_raw, i);
             printf(" %04x", i + (unsigned) get_section(hdr, idx)->sh_addr + 1);
-            count = 0;
+            bytes_on_raw = 0;
         }
     }
 }
