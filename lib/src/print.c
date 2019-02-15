@@ -14,7 +14,7 @@ int error(const char *message, ...)
     va_list ap;
 
     va_start(ap, message);
-    vfprintf(stdout, message, ap);
+    vfprintf(stderr, message, ap);
     va_end(ap);
     return (84);
 }
