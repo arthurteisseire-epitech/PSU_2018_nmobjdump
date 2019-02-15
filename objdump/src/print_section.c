@@ -35,20 +35,24 @@ void print_sides(const unsigned char *section, size_t count, size_t i)
     printf("\n");
 }
 
+void print_byte(const unsigned char *section, size_t i)
+{
+    if (i % 4 == 0)
+        printf(" ");
+    printf("%02x", section[i]);
+}
+
 void print_section(const Elf64_Ehdr *hdr, size_t idx)
 {
     unsigned off = (unsigned) get_section(hdr, idx)->sh_addr;
-    const unsigned char *section =
-            (void *) hdr + get_section(hdr, idx)->sh_offset;
+    unsigned char *section = (void *) hdr + get_section(hdr, idx)->sh_offset;
+    const char *section_name = find_string(hdr, get_section(hdr, idx)->sh_name);
     size_t count = 0;
 
-    printf("Contents of section %s:\n",
-           find_string(hdr, get_section(hdr, idx)->sh_name));
+    printf("Contents of section %s:\n", section_name);
     printf(" %04x", off);
-    for (size_t i = 0; i < get_section(hdr, idx)->sh_size; i++) {
-        if (i % 4 == 0)
-            printf(" ");
-        printf("%02x", section[i]);
+    for (size_t i = 0; i < get_section(hdr, idx)->sh_size; ++i) {
+        print_byte(section, i);
         ++count;
         if (i == get_section(hdr, idx)->sh_size - 1) {
             print_sides(section, count, i);
