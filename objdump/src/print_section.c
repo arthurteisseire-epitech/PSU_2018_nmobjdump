@@ -42,9 +42,9 @@ void print_byte(const unsigned char *section, size_t i)
     printf("%02x", section[i]);
 }
 
-void print_section(const Elf64_Ehdr *hdr, size_t idx)
+void print_section(const void *hdr, size_t idx)
 {
-    unsigned char *section = (void *) hdr + get_section(hdr, idx)->sh_offset;
+    const unsigned char *section = hdr + get_section(hdr, idx)->sh_offset;
     const char *section_name = find_string(hdr, get_section(hdr, idx)->sh_name);
     size_t count = 0;
 
