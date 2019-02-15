@@ -33,7 +33,7 @@ Elf64_Shdr *find_string_table(const Elf64_Ehdr *hdr);
 
 char *find_string(const Elf64_Ehdr *hdr, int offset);
 void print_header(const Elf64_Ehdr *hdr, const char *filename);
-void print_sections(Elf64_Ehdr *hdr);
-void print_section(Elf64_Ehdr *hdr, Elf64_Shdr *shdr);
+void print_sections(const Elf64_Ehdr *hdr);
+void print_section(const Elf64_Ehdr *hdr, size_t i);
 
 #endif

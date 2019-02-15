@@ -22,9 +22,9 @@ static bool is_section_printable(const Elf64_Ehdr *hdr, const Elf64_Shdr *shdr)
             shdr->sh_size != 0);
 }
 
-void print_sections(Elf64_Ehdr *hdr)
+void print_sections(const Elf64_Ehdr *hdr)
 {
     for (size_t i = 0; i < hdr->e_shnum; ++i)
         if (is_section_printable(hdr, get_section(hdr, i)))
-            print_section(hdr, get_section(hdr, i));
+            print_section(hdr, i);
 }
