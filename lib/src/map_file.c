@@ -16,12 +16,16 @@
 #include <string.h>
 #include "lib.h"
 
-static Elf64_Ehdr *fd_to_hdr(int fd)
+static Elf64_Ehdr *fd_to_hdr(int fd, const char *filename)
 {
     struct stat s;
     void *buf;
 
     fstat(fd, &s);
+    if (s.st_size < (long) sizeof(Elf64_Ehdr)) {
+        fprintf(stdout, "nm: %s: file format not recognized\n", filename);
+        return (NULL);
+    }
     buf = mmap(NULL, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
     if (buf != MAP_FAILED)
         return (buf);
@@ -53,7 +57,7 @@ Elf64_Ehdr *file_to_hdr(const char *prog, const char *filename)
         error("%s: '%s': No such file\n", prog, filename);
         return (NULL);
     }
-    hdr = fd_to_hdr(fd);
+    hdr = fd_to_hdr(fd, filename);
     close(fd);
     return (hdr);
 }

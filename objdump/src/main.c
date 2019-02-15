@@ -16,7 +16,7 @@ static int exec(int ac, const char **av)
 
     for (int i = 1; i < ac; ++i) {
         hdr = file_to_hdr("objdump", av[i]);
-        if (!hdr || check_supported(hdr, NULL) == 84) {
+        if (!hdr || check_supported(hdr, av[i]) == 84) {
             status = 84;
             continue;
         }
