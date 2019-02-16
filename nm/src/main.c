@@ -11,7 +11,7 @@
 #include "nm.h"
 #include "lib.h"
 
-void exec_with(const Elf64_Ehdr *hdr, const char *filename, int ac)
+static void exec_with(const void *hdr, const char *filename, int ac)
 {
     if (ac >= 3)
         printf("\n%s:\n", filename);
