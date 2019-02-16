@@ -64,14 +64,14 @@ static char get_char_type(const Elf64_Sym *sym, const Elf64_Shdr *section)
 void add_symbol(nm_t *nm, const Elf64_Ehdr *hdr, const Elf64_Shdr *section,
                 size_t i)
 {
-    Elf64_Shdr *strtab = get_section(hdr, section->sh_link);
+    Elf64_Shdr *strtab = sec(hdr, section->sh_link);
     Elf64_Sym *sym = get_symbol((void *) hdr + section->sh_offset, i);
     char *name = (char *) hdr + strtab->sh_offset + sym->st_name;
     char type;
 
     if (sym->st_info != STT_FILE && sym->st_info != STT_SECTION
         && sym->st_info != STT_NOTYPE) {
-        type = get_char_type(sym, get_section(hdr, sym->st_shndx));
+        type = get_char_type(sym, sec(hdr, sym->st_shndx));
         if (type != '?') {
             nm->len++;
             nm->symbols = realloc(nm->symbols, nm->len * sizeof(symbol_t));

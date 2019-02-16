@@ -13,7 +13,7 @@ Elf64_Shdr *get_section_header(const Elf64_Ehdr *hdr)
     return ((Elf64_Shdr *) ((void *) hdr + hdr->e_shoff));
 }
 
-Elf64_Shdr *get_section(const Elf64_Ehdr *hdr, size_t idx)
+Elf64_Shdr *sec(const Elf64_Ehdr *hdr, size_t idx)
 {
     return (&get_section_header(hdr)[idx]);
 }

@@ -28,14 +28,14 @@ void print_byte(const unsigned char *section, size_t i)
 void print_index_on_new_line(const void *hdr, size_t idx, unsigned int i)
 {
     if (bytes_on_raw(i) == 1)
-        printf(" %04x", i + (unsigned) get_section(hdr, idx)->sh_addr);
+        printf(" %04x", i + (unsigned) sec(hdr, idx)->sh_addr);
 }
 
 void print_section(const void *hdr, size_t idx)
 {
-    const unsigned char *section = hdr + get_section(hdr, idx)->sh_offset;
-    const char *section_name = find_string(hdr, get_section(hdr, idx)->sh_name);
-    const size_t tot_bytes = get_section(hdr, idx)->sh_size;
+    const unsigned char *section = hdr + sec(hdr, idx)->sh_offset;
+    const char *section_name = find_string(hdr, sec(hdr, idx)->sh_name);
+    const size_t tot_bytes = sec(hdr, idx)->sh_size;
 
     printf("Contents of section %s:\n", section_name);
     for (unsigned i = 0; i < tot_bytes; ++i) {
