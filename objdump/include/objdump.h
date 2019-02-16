@@ -32,7 +32,7 @@ typedef struct flags_s {
 Elf64_Shdr *find_string_table(const Elf64_Ehdr *hdr);
 
 char *find_string(const Elf64_Ehdr *hdr, int offset);
-void print_header(const Elf64_Ehdr *hdr, const char *filename);
+void print_header(const Elf64_Ehdr *hdr);
 void print_sections(const void *hdr, size_t shnum);
 void print_section(const void *hdr, size_t i);
 

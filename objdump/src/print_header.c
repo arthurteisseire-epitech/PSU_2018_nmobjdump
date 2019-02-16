@@ -9,14 +9,28 @@
 #include "objdump.h"
 #include "lib.h"
 
-void print_header(const Elf64_Ehdr *hdr, const char *filename)
+void print_architecture(Elf64_Half machine)
 {
-    unsigned flags = get_flags(hdr, hdr->e_type, hdr->e_shnum);
+    printf("architecture: %s, ", get_machine_name(machine));
+}
 
-    printf("\n%s:     file format elf64-x86-64\n", filename);
-    printf("architecture: %s, ", get_machine_name(hdr->e_machine));
+void print_all_flags(const void *hdr, uint16_t type, size_t shnum)
+{
+    unsigned flags = get_flags(hdr, type, shnum);
+
     printf("flags 0x%08x:\n", flags);
     print_flags(flags, 0, "");
-    printf("\nstart address 0x%016lx\n\n", hdr->e_entry);
+}
+
+void print_address(size_t entry)
+{
+    printf("\nstart address 0x%016lx\n\n", entry);
+}
+
+void print_header(const Elf64_Ehdr *hdr)
+{
+    print_architecture(hdr->e_machine);
+    print_all_flags(hdr, hdr->e_type, hdr->e_shnum);
+    print_address(hdr->e_entry);
 }
 
