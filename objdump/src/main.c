@@ -11,7 +11,7 @@
 
 static int exec(int ac, const char **av)
 {
-    Elf64_Ehdr *hdr;
+    void *hdr;
     int status = 0;
 
     for (int i = 1; i < ac; ++i) {

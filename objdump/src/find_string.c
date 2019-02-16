@@ -9,7 +9,7 @@
 #include <stddef.h>
 #include "lib.h"
 
-Elf64_Shdr *find_string_table(const Elf64_Ehdr *hdr)
+void *find_string_table(const Elf64_Ehdr *hdr)
 {
     if (hdr->e_shstrndx == SHN_UNDEF)
         return (NULL);
@@ -18,10 +18,10 @@ Elf64_Shdr *find_string_table(const Elf64_Ehdr *hdr)
 
 char *find_string(const Elf64_Ehdr *hdr, int offset)
 {
-    Elf64_Shdr *string_table = find_string_table(hdr);
+    void *string_table = find_string_table(hdr);
 
     if (string_table == NULL)
         return (NULL);
-    return ((void *) string_table + offset);
+    return (string_table + offset);
 }
 
