@@ -63,12 +63,12 @@ static void add_section_symbols(nm_t *nm, const void *hdr, size_t idx)
         add_symbol(nm, hdr, sec(hdr, idx), i);
 }
 
-bool print_file_symbols(const Elf64_Ehdr *hdr)
+bool print_file_symbols(const void *hdr, size_t shnum)
 {
     nm_t *nm = calloc(1, sizeof(nm_t));
     bool is_symbols;
 
-    for (size_t i = 0; i < hdr->e_shnum; ++i)
+    for (size_t i = 0; i < shnum; ++i)
         if (sec(hdr, i)->sh_type == SHT_SYMTAB)
             add_section_symbols(nm, hdr, i);
     qsort(nm->symbols, nm->len, sizeof(symbol_t),

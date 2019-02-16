@@ -29,7 +29,7 @@ typedef struct map_s {
     unsigned flag;
 } map_t;
 
-bool print_file_symbols(const Elf64_Ehdr *hdr);
+bool print_file_symbols(const void *hdr, size_t shnum);
 void add_symbol(nm_t *nm, const Elf64_Ehdr *hdr, const Elf64_Shdr *section,
                 size_t i);
 
