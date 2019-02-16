@@ -14,12 +14,12 @@
 static bool is_section_printable(const Elf64_Ehdr *hdr, const Elf64_Shdr *shdr)
 {
     return (shdr->sh_type != SHT_NOBITS &&
-            shdr->sh_type != SHT_NULL &&
-            strcmp(find_string(hdr, shdr->sh_name), ".strtab") != 0 &&
-            strcmp(find_string(hdr, shdr->sh_name), ".symtab") != 0 &&
-            strcmp(find_string(hdr, shdr->sh_name), ".shstrtab") != 0 &&
-            strcmp(find_string(hdr, shdr->sh_name), ".bss") != 0 &&
-            shdr->sh_size != 0);
+    shdr->sh_type != SHT_NULL &&
+    strcmp(find_string(hdr, shdr->sh_name), ".strtab") != 0 &&
+    strcmp(find_string(hdr, shdr->sh_name), ".symtab") != 0 &&
+    strcmp(find_string(hdr, shdr->sh_name), ".shstrtab") != 0 &&
+    strcmp(find_string(hdr, shdr->sh_name), ".bss") != 0 &&
+    shdr->sh_size != 0);
 }
 
 void print_sections(const Elf64_Ehdr *hdr)
