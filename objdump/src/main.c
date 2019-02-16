@@ -11,7 +11,7 @@
 
 static int exec(int ac, const char **av)
 {
-    void *hdr;
+    Elf64_Ehdr *hdr;
     int status = 0;
 
     for (int i = 1; i < ac; ++i) {
@@ -21,7 +21,7 @@ static int exec(int ac, const char **av)
             continue;
         }
         print_header(hdr, av[i]);
-        print_sections(hdr);
+        print_sections(hdr, hdr->e_shnum);
     }
     return (status);
 }
