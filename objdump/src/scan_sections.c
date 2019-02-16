@@ -19,6 +19,8 @@ static bool is_section_printable(const Elf64_Ehdr *hdr, size_t idx)
     strcmp(find_string(hdr, sec(hdr, idx)->sh_name), ".symtab") != 0 &&
     strcmp(find_string(hdr, sec(hdr, idx)->sh_name), ".shstrtab") != 0 &&
     strcmp(find_string(hdr, sec(hdr, idx)->sh_name), ".bss") != 0 &&
+    strcmp(find_string(hdr, sec(hdr, idx)->sh_name), ".rela.text") != 0 &&
+    strcmp(find_string(hdr, sec(hdr, idx)->sh_name), ".rela.eh_frame") != 0 &&
     sec(hdr, idx)->sh_size != 0);
 }
 
