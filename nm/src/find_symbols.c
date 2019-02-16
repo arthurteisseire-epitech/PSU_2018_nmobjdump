@@ -53,15 +53,14 @@ static void print_symbols(nm_t *nm)
     }
 }
 
-static void add_section_symbols(nm_t *nm, const Elf64_Ehdr *hdr,
-                                const Elf64_Shdr *current_section)
+static void add_section_symbols(nm_t *nm, const void *hdr, size_t idx)
 {
     size_t nb_symbols = 0;
 
-    if (current_section->sh_entsize != 0)
-        nb_symbols = current_section->sh_size / current_section->sh_entsize;
+    if (sec(hdr, idx)->sh_entsize != 0)
+        nb_symbols = sec(hdr, idx)->sh_size / sec(hdr, idx)->sh_entsize;
     for (size_t i = 0; i < nb_symbols; ++i)
-        add_symbol(nm, hdr, current_section, i);
+        add_symbol(nm, hdr, sec(hdr, idx), i);
 }
 
 bool print_file_symbols(const Elf64_Ehdr *hdr)
@@ -72,7 +71,7 @@ bool print_file_symbols(const Elf64_Ehdr *hdr)
 
     for (size_t i = 0; i < hdr->e_shnum; ++i) {
         if (current_section->sh_type == SHT_SYMTAB)
-            add_section_symbols(nm, hdr, current_section);
+            add_section_symbols(nm, hdr, i);
         current_section = (void *) current_section + hdr->e_shentsize;
     }
     qsort(nm->symbols, nm->len, sizeof(symbol_t),
