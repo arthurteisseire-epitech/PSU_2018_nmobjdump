@@ -19,7 +19,7 @@ void exec_with(const Elf64_Ehdr *hdr, const char *filename, int ac)
         printf("nm: %s: no symbols\n", filename);
 }
 
-int exec(int ac, char **av, const char *prog_name)
+int exec(int ac, const char **av, const char *prog_name)
 {
     void *hdr;
     int status = 0;
@@ -34,9 +34,9 @@ int exec(int ac, char **av, const char *prog_name)
     return (status);
 }
 
-int main(int ac, char **av)
+int main(int ac, const char **av)
 {
     if (ac == 1)
-        return (exec(2, (char *[]) {"", "a.out"}, "nm"));
+        return (exec(2, (const char *[]) {"", "a.out"}, "nm"));
     return (exec(ac, av, "nm"));
 }
