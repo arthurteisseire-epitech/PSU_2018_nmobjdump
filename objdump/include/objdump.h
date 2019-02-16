@@ -36,4 +36,8 @@ void print_header(const Elf64_Ehdr *hdr, const char *filename);
 void print_sections(const Elf64_Ehdr *hdr);
 void print_section(const void *hdr, size_t i);
 
+void print_ascii(const unsigned char *section, unsigned i);
+size_t bytes_on_raw(unsigned i);
+void print_chars(const unsigned char *p, size_t neg_off);
+
 #endif
