@@ -23,3 +23,11 @@ void (*ex)(const void *, const char *, int))
     return (status);
 }
 
+int exec_main(int ac, const char **av, const char *prog_name,
+void (*ex)(const void *, const char *, int))
+{
+    if (ac == 1)
+        return (exec(2, (const char *[]) {"", "a.out"}, prog_name, ex));
+    return (exec(ac, av, prog_name, ex));
+}
+

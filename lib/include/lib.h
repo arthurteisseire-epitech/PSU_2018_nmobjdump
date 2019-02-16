@@ -23,4 +23,7 @@ Elf64_Shdr *first_shdr(const Elf64_Ehdr *hdr);
 int exec(int ac, const char **av, const char *prog_name,
 void (*ex)(const void *, const char *, int));
 
+int exec_main(int ac, const char **av, const char *prog_name,
+void (*ex)(const void *, const char *, int));
+
 #endif

@@ -21,9 +21,5 @@ static void arch_exec(const void *hdr, const char *filename, int ac)
 
 int main(int ac, const char **av)
 {
-    const char *prog_name = "nm";
-
-    if (ac == 1)
-        return (exec(2, (const char *[]) {"", "a.out"}, prog_name, arch_exec));
-    return (exec(ac, av, prog_name, arch_exec));
+    return (exec_main(ac, av, "nm", arch_exec));
 }
