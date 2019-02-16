@@ -36,7 +36,9 @@ int exec(int ac, const char **av, const char *prog_name)
 
 int main(int ac, const char **av)
 {
+    const char *prog_name = "nm";
+
     if (ac == 1)
-        return (exec(2, (const char *[]) {"", "a.out"}, "nm"));
-    return (exec(ac, av, "nm"));
+        return (exec(2, (const char *[]) {"", "a.out"}, prog_name));
+    return (exec(ac, av, prog_name));
 }
