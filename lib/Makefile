@@ -13,6 +13,7 @@ SRC	=		$(DSRC)print.c			\
 			$(DSRC)map_file.c		\
 			$(DSRC)utils.c			\
 			$(DSRC)error_handling.c	\
+			$(DSRC)exec.c			\
 
 CFLAGS	+=	-Wall -W -Wextra -I$(INC)
 LDFLAGS	=	-lcriterion
