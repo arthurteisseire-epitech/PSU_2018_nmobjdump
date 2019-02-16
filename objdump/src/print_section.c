@@ -11,7 +11,7 @@
 #include "objdump.h"
 #include "lib.h"
 
-void print_ascci(const unsigned char *p, size_t neg_off)
+void print_chars(const unsigned char *p, size_t neg_off)
 {
     p -= neg_off;
     printf(" ");
@@ -31,7 +31,7 @@ static size_t bytes_on_raw(unsigned i)
     return (i % 16);
 }
 
-void print_sides(const unsigned char *section, unsigned i)
+void print_ascii(const unsigned char *section, unsigned i)
 {
     const size_t bor = bytes_on_raw(i);
     const size_t missing_bytes_on_raw = 16 - bor;
@@ -39,7 +39,7 @@ void print_sides(const unsigned char *section, unsigned i)
 
     for (size_t j = 0; j < nb_spaces + 1; ++j)
         printf(" ");
-    print_ascci(&section[i], bor - 1);
+    print_chars(&section[i], bor - 1);
     for (size_t j = 0; j < missing_bytes_on_raw; ++j)
         printf(" ");
     printf("\n");
@@ -59,14 +59,11 @@ void print_section(const void *hdr, size_t idx)
     const size_t tot_bytes = get_section(hdr, idx)->sh_size;
 
     printf("Contents of section %s:\n", section_name);
-    printf(" %04x", (unsigned) get_section(hdr, idx)->sh_addr);
     for (unsigned i = 0; i < tot_bytes; ++i) {
+        if (bytes_on_raw(i) == 1)
+            printf(" %04x", i + (unsigned) get_section(hdr, idx)->sh_addr);
         print_byte(section, i);
-        if (i == tot_bytes - 1) {
-            print_sides(section, i);
-        } else if (bytes_on_raw(i) == 16) {
-            print_sides(section, i);
-            printf(" %04x", i + (unsigned) get_section(hdr, idx)->sh_addr + 1);
-        }
+        if (bytes_on_raw(i) == 16 || i == tot_bytes - 1)
+            print_ascii(section, i);
     }
 }
