@@ -32,7 +32,6 @@ typedef struct flags_s {
 Elf64_Shdr *find_string_table(const Elf64_Ehdr *hdr);
 
 char *find_string(const Elf64_Ehdr *hdr, int offset);
-void print_header(const Elf64_Ehdr *hdr);
 void print_sections(const void *hdr, size_t shnum);
 void print_section(const void *hdr, size_t i);
 
@@ -44,5 +43,9 @@ void print_flags(unsigned int flags, unsigned int i, char *comma);
 const char *get_machine_name(Elf64_Half machine);
 unsigned int sym_flags(const void *hdr, size_t shnum);
 unsigned int get_flags(const void *hdr, uint16_t elf_type, size_t shnum);
+
+void print_architecture(Elf64_Half machine);
+void print_all_flags(const void *hdr, uint16_t type, size_t shnum);
+void print_address(size_t entry);
 
 #endif

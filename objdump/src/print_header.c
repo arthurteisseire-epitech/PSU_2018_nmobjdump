@@ -27,10 +27,3 @@ void print_address(size_t entry)
     printf("\nstart address 0x%016lx\n\n", entry);
 }
 
-void print_header(const Elf64_Ehdr *hdr)
-{
-    print_architecture(hdr->e_machine);
-    print_all_flags(hdr, hdr->e_type, hdr->e_shnum);
-    print_address(hdr->e_entry);
-}
-
