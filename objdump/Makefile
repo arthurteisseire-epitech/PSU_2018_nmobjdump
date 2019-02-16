@@ -18,6 +18,7 @@ SRC		=	$(DSRC)main.c					\
 			$(DSRC)scan_sections.c			\
 			$(DSRC)print_section.c			\
 			$(DSRC)print_section_utils.c	\
+			$(DSRC)print_header_utils.c		\
 
 CFLAGS	+=  -std=gnu11 -Wall -Wextra -I$(INC) -I$(DLIB)include
 LDFLAGS	=	-lcriterion

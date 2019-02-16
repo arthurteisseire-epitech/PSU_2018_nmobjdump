@@ -40,4 +40,9 @@ void print_ascii(const unsigned char *section, unsigned i);
 size_t bytes_on_raw(unsigned i);
 void print_chars(const unsigned char *p, size_t neg_off);
 
+void print_flags(unsigned int flags, unsigned int i, char *comma);
+const char *get_machine_name(Elf64_Half machine);
+unsigned int sym_flags(const void *hdr, size_t shnum);
+unsigned int get_flags(const void *hdr, uint16_t elf_type, size_t shnum);
+
 #endif
