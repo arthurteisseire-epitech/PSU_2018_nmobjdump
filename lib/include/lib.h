@@ -15,6 +15,6 @@ int error(const char *message, ...);
 
 Elf64_Sym *get_symbol(const Elf64_Ehdr *hdr, size_t idx);
 Elf64_Shdr *sec(const Elf64_Ehdr *hdr, size_t idx);
-Elf64_Shdr *get_section_header(const Elf64_Ehdr *hdr);
+Elf64_Shdr *first_shdr(const Elf64_Ehdr *hdr);
 
 #endif

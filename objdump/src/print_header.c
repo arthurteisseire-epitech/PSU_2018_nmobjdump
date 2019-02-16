@@ -70,29 +70,27 @@ static const char *get_machine_name(Elf64_Half machine)
     return machines[0].name;
 }
 
-unsigned int sym_flags(const Elf64_Ehdr *hdr)
+unsigned int sym_flags(const void *hdr, size_t shnum)
 {
-    Elf64_Shdr *shdr = get_section_header(hdr);
-
-    for (int i = 0; i < hdr->e_shnum; ++i)
-        if (shdr[i].sh_type == SHT_SYMTAB)
+    for (size_t i = 0; i < shnum; ++i)
+        if (sec(hdr, i)->sh_type == SHT_SYMTAB)
             return (HAS_SYMS);
     return (NO_FLAGS);
 }
 
-unsigned int get_flags(const Elf64_Ehdr *hdr)
+unsigned int get_flags(const void *hdr, uint16_t elf_type, size_t shnum)
 {
-    unsigned int flags = sym_flags(hdr);
+    unsigned int flags = sym_flags(hdr, shnum);
 
     for (int i = 0; type_flags[i].flag; i++)
-        if (hdr->e_type == type_flags[i].type)
+        if (elf_type == type_flags[i].type)
             return (type_flags[i].flag + flags);
     return (flags);
 }
 
 void print_header(const Elf64_Ehdr *hdr, const char *filename)
 {
-    unsigned flags = get_flags(hdr);
+    unsigned flags = get_flags(hdr, hdr->e_type, hdr->e_shnum);
 
     printf("\n%s:     file format elf64-x86-64\n", filename);
     printf("architecture: %s, ", get_machine_name(hdr->e_machine));

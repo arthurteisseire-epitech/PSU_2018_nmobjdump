@@ -66,7 +66,7 @@ static void add_section_symbols(nm_t *nm, const Elf64_Ehdr *hdr,
 
 bool print_file_symbols(const Elf64_Ehdr *hdr)
 {
-    Elf64_Shdr *current_section = get_section_header(hdr);
+    Elf64_Shdr *current_section = first_shdr(hdr);
     nm_t *nm = calloc(1, sizeof(nm_t));
     bool is_symbols;
 
