@@ -12,12 +12,12 @@ DHEADER	=	$(DSRC)header/
 DLIB	=	../lib/
 LIBS	=	-L$(DLIB) -lelf
 
-SRC		=	$(DSRC)main.c				\
-			$(DSRC)print_header.c		\
-			$(DSRC)find_string.c		\
-			$(DSRC)scan_sections.c		\
-			$(DSRC)print_section.c		\
-			$(DSRC)print_utils.c		\
+SRC		=	$(DSRC)main.c					\
+			$(DSRC)print_header.c			\
+			$(DSRC)find_string.c			\
+			$(DSRC)scan_sections.c			\
+			$(DSRC)print_section.c			\
+			$(DSRC)print_section_utils.c	\
 
 CFLAGS	+=  -std=gnu11 -Wall -Wextra -I$(INC) -I$(DLIB)include
 LDFLAGS	=	-lcriterion
