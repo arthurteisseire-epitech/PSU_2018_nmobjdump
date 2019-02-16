@@ -60,7 +60,7 @@ static void add_section_symbols(nm_t *nm, const void *hdr, size_t idx)
     if (sec(hdr, idx)->sh_entsize != 0)
         nb_symbols = sec(hdr, idx)->sh_size / sec(hdr, idx)->sh_entsize;
     for (size_t i = 0; i < nb_symbols; ++i)
-        add_symbol(nm, hdr, sec(hdr, idx), i);
+        add_symbol(nm, hdr, idx, i);
 }
 
 bool print_file_symbols(const void *hdr, size_t shnum)

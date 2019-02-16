@@ -61,11 +61,10 @@ static char get_char_type(const Elf64_Sym *sym, const Elf64_Shdr *section)
     return (section_type(section));
 }
 
-void add_symbol(nm_t *nm, const Elf64_Ehdr *hdr, const Elf64_Shdr *section,
-                size_t i)
+void add_symbol(nm_t *nm, const void *hdr, size_t idx, size_t i)
 {
-    Elf64_Shdr *strtab = sec(hdr, section->sh_link);
-    Elf64_Sym *sym = get_symbol((void *) hdr + section->sh_offset, i);
+    Elf64_Shdr *strtab = sec(hdr, sec(hdr, idx)->sh_link);
+    Elf64_Sym *sym = get_symbol(hdr + sec(hdr, idx)->sh_offset, i);
     char *name = (char *) hdr + strtab->sh_offset + sym->st_name;
     char type;
 
