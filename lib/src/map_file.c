@@ -23,7 +23,7 @@ static Elf64_Ehdr *fd_to_hdr(int fd, const char *filename)
 
     fstat(fd, &s);
     if (s.st_size < (long) sizeof(Elf64_Ehdr)) {
-        fprintf(stdout, "nm: %s: file format not recognized\n", filename);
+        fprintf(stdout, "nm: %s: File format not recognized\n", filename);
         return (NULL);
     }
     buf = mmap(NULL, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
