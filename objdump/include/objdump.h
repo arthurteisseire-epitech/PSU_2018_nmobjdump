@@ -29,9 +29,6 @@ typedef struct flags_s {
     uint32_t flag;
 } flags_t;
 
-Elf64_Shdr *find_string_table(const Elf64_Ehdr *hdr);
-
-char *find_string(const Elf64_Ehdr *hdr, int offset);
 void print_sections(const void *hdr, size_t shnum);
 void print_section(const void *hdr, size_t i);
 

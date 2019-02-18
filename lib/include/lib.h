@@ -26,4 +26,7 @@ void (*ex)(const void *, const char *, int));
 int exec_main(int ac, const char **av, const char *prog_name,
 void (*ex)(const void *, const char *, int));
 
+void *find_string_table(const Elf64_Ehdr *hdr);
+char *find_string(const Elf64_Ehdr *hdr, int offset);
+
 #endif
