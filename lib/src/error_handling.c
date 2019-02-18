@@ -25,7 +25,7 @@ int check_supported(Elf64_Ehdr *hdr, const char *filename)
 
     if (status != 0)
         return (status);
-    if (hdr->e_ident[EI_CLASS] == ELFCLASSNONE)
+    if (get_arch(hdr) == 0)
         return (error("Unknown architecture\n"));
     if (hdr->e_ident[EI_DATA] == ELFDATANONE)
         return (error("Unknown byte order\n"));
