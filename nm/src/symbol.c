@@ -30,8 +30,12 @@ static char get_scope(const Elf64_Sym *sym, char c)
     return (c);
 }
 
+#include <string.h>
 static char section_type(const Elf64_Shdr *section)
 {
+    if (section->sh_type == SHT_FINI_ARRAY ||
+    section->sh_type == SHT_INIT_ARRAY)
+        return ('T');
     for (int i = 0; types[i].c; ++i)
         if (types[i].type == section->sh_type &&
             types[i].flag == section->sh_flags)
@@ -39,7 +43,7 @@ static char section_type(const Elf64_Shdr *section)
     return ('?');
 }
 
-static char get_char_type(const Elf64_Sym *sym, const Elf64_Shdr *section)
+static char get_char_type(const void *hdr, const Elf64_Sym *sym)
 {
     if (sym->st_shndx == SHN_ABS)
         return ('A');
@@ -54,11 +58,7 @@ static char get_char_type(const Elf64_Sym *sym, const Elf64_Shdr *section)
     }
     if (sym->st_shndx == SHN_UNDEF)
         return ('U');
-    if (section->sh_type == SHT_FINI_ARRAY)
-        return ('T');
-    if (section->sh_type == SHT_INIT_ARRAY)
-        return ('T');
-    return (section_type(section));
+    return (section_type(sec(hdr, sym->st_shndx)));
 }
 
 void add_symbol(nm_t *nm, const void *hdr, size_t idx, size_t i)
@@ -68,9 +68,8 @@ void add_symbol(nm_t *nm, const void *hdr, size_t idx, size_t i)
     char *name = (char *) hdr + strtab->sh_offset + sym->st_name;
     char type;
 
-    if (sym->st_info != STT_FILE && sym->st_info != STT_SECTION
-        && sym->st_info != STT_NOTYPE) {
-        type = get_char_type(sym, sec(hdr, sym->st_shndx));
+    if (sym->st_name != 0 && ELF64_ST_TYPE(sym->st_info) != 4) {
+        type = get_char_type(hdr, sym);
         if (type != '?') {
             nm->len++;
             nm->symbols = realloc(nm->symbols, nm->len * sizeof(symbol_t));
