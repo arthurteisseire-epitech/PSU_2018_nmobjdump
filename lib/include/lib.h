@@ -11,6 +11,24 @@
 #include <elf.h>
 #include <stddef.h>
 
+typedef union ehdr_s {
+    Elf64_Ehdr *member_64;
+    Elf32_Ehdr *member_32;
+} ehdr_t;
+
+typedef union shdr_s {
+    Elf64_Shdr *member_64;
+    Elf32_Shdr *member_32;
+} shdr_t;
+
+typedef union sym_s {
+    Elf64_Sym *member_64;
+    Elf32_Sym *member_32;
+} sym_t;
+
+#define _M(hdr, m_name) (get_arch(hdr) == 64 ?\
+    hdr->member_64->m_name : hdr->member_32->m_name)
+
 int check_supported(Elf64_Ehdr *hdr, const char *filename);
 Elf64_Ehdr *file_to_hdr(const char *prog, const char *filename);
 
