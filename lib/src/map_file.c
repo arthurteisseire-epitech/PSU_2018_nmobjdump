@@ -16,7 +16,7 @@
 #include <string.h>
 #include "lib.h"
 
-static Elf64_Ehdr *fd_to_hdr(int fd, const char *filename)
+static void *fd_to_hdr(int fd, const char *filename)
 {
     struct stat s;
     void *buf;
@@ -45,10 +45,10 @@ static int is_dir(const char *prog, const char *filename)
     return (0);
 }
 
-Elf64_Ehdr *file_to_hdr(const char *prog, const char *filename)
+void *file_to_hdr(const char *prog, const char *filename)
 {
     int fd;
-    Elf64_Ehdr *hdr;
+    void *hdr;
 
     if (is_dir(prog, filename))
         return (NULL);
