@@ -16,7 +16,6 @@ static const map_t types[] = {
         {'T', SHT_PROGBITS,      SHF_ALLOC + SHF_EXECINSTR},
         {'T', SHT_FINI_ARRAY,    SHF_ALLOC + SHF_WRITE},
         {'T', SHT_INIT_ARRAY,    SHF_ALLOC + SHF_WRITE},
-        {'T', SHT_PREINIT_ARRAY, SHF_ALLOC + SHF_WRITE},
         {'D', SHT_PROGBITS,      SHF_ALLOC + SHF_WRITE},
         {'D', SHT_DYNAMIC,       SHF_ALLOC + SHF_WRITE},
         {'R', SHT_PROGBITS,      SHF_ALLOC},
@@ -30,12 +29,8 @@ static char get_scope(const Elf64_Sym *sym, char c)
     return (c);
 }
 
-#include <string.h>
 static char section_type(const Elf64_Shdr *section)
 {
-    if (section->sh_type == SHT_FINI_ARRAY ||
-    section->sh_type == SHT_INIT_ARRAY)
-        return ('T');
     for (int i = 0; types[i].c; ++i)
         if (types[i].type == section->sh_type &&
             types[i].flag == section->sh_flags)
@@ -68,7 +63,7 @@ void add_symbol(nm_t *nm, const void *hdr, size_t idx, size_t i)
     char *name = (char *) hdr + strtab->sh_offset + sym->st_name;
     char type;
 
-    if (sym->st_name != 0 && ELF64_ST_TYPE(sym->st_info) != 4) {
+    if (sym->st_name != 0 && ELF64_ST_TYPE(sym->st_info) != STT_FILE) {
         type = get_char_type(hdr, sym);
         if (type != '?') {
             nm->len++;
