@@ -59,7 +59,7 @@ static char get_char_type(const void *hdr, const void *sym)
 void add_symbol(nm_t *nm, const void *hdr, size_t idx, size_t i)
 {
     size_t str_off = _SI(hdr, _SI(hdr, idx, sh_link), sh_offset);
-    const void *sym = get_symbol(hdr + _SI(hdr, idx, sh_offset), i);
+    const void *sym = get_symbol(hdr, idx, i);
     char *name = (char *) hdr + str_off + _SYM(hdr, sym, st_name);
     char type;
 

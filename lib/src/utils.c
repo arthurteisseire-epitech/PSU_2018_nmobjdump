@@ -20,9 +20,11 @@ const void *sec(const void *hdr, size_t idx)
     return (first_shdr(hdr) + _E(hdr, e_shentsize) * idx);
 }
 
-const Elf64_Sym * get_symbol(const void *hdr, size_t idx)
+const void *get_symbol(const void *hdr, size_t shdr_idx, size_t idx)
 {
-    return (&((Elf64_Sym *) hdr)[idx]);
+    const void *shdr = hdr + _SI(hdr, shdr_idx, sh_offset);
+
+    return (shdr + _SI(hdr, shdr_idx, sh_entsize) * idx);
 }
 
 unsigned get_arch(const void *hdr)

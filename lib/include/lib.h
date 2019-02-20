@@ -43,7 +43,7 @@ void *file_to_hdr(const char *prog, const char *filename);
 
 int error(const char *message, ...);
 
-const Elf64_Sym * get_symbol(const void *hdr, size_t idx);
+const void *get_symbol(const void *hdr, size_t shdr_idx, size_t idx);
 const void *sec(const void *hdr, size_t idx);
 const void *first_shdr(const void *hdr);
 unsigned get_arch(const void *hdr);
