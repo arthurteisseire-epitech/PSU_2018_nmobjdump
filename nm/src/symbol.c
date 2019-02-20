@@ -58,9 +58,9 @@ static char get_char_type(const void *hdr, const Elf64_Sym *sym)
 
 void add_symbol(nm_t *nm, const void *hdr, size_t idx, size_t i)
 {
-    const Elf64_Shdr *strtab = sec(hdr, _SI(hdr, idx, sh_link));
+    size_t str_off = _SI(hdr, _SI(hdr, idx, sh_link), sh_offset);
     Elf64_Sym *sym = get_symbol(hdr + _SI(hdr, idx, sh_offset), i);
-    char *name = (char *) hdr + strtab->sh_offset + sym->st_name;
+    char *name = (char *) hdr + str_off + sym->st_name;
     char type;
 
     if (sym->st_name != 0 && ELF64_ST_TYPE(sym->st_info) != STT_FILE) {

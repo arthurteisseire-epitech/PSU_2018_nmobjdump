@@ -34,9 +34,6 @@ typedef union sym_s {
 #define _SI(hdr, idx, m_name) (get_arch(hdr) == 64 ?\
     ((shdr_t)sec(hdr, idx)).member_64->m_name : ((shdr_t)sec(hdr, idx)).member_32->m_name)
 
-#define _S(hdr, shdr, m_name) (get_arch(hdr) == 64 ?\
-    ((shdr_t)shdr).member_64->m_name : ((shdr_t)shdr).member_32->m_name)
-
 int check_supported(const void *hdr, const char *filename);
 void *file_to_hdr(const char *prog, const char *filename);
 
