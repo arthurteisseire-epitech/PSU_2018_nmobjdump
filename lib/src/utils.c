@@ -10,14 +10,14 @@
 #include <string.h>
 #include "lib.h"
 
-const Elf64_Shdr *first_shdr(const void *hdr)
+const void *first_shdr(const void *hdr)
 {
     return ((Elf64_Shdr *) ((void *) hdr + _M(hdr, e_shoff)));
 }
 
-const Elf64_Shdr *sec(const void *hdr, size_t idx)
+const void *sec(const void *hdr, size_t idx)
 {
-    return (&first_shdr(hdr)[idx]);
+    return (first_shdr(hdr) + _M(hdr, e_shentsize) * idx);
 }
 
 Elf64_Sym *get_symbol(const void *hdr, size_t idx)
