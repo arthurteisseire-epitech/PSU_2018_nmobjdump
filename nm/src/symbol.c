@@ -22,9 +22,9 @@ static const map_t types[] = {
         {0, 0, 0},
 };
 
-static char get_scope(const Elf64_Sym *sym, char c)
+static char get_scope(const void *hdr, const void *sym, char c)
 {
-    if (ELF64_ST_BIND(sym->st_info) == STB_LOCAL)
+    if (ELF64_ST_BIND(_SYM(hdr, sym, st_info)) == STB_LOCAL)
         return ((char) tolower(c));
     return (c);
 }
@@ -70,7 +70,7 @@ void add_symbol(nm_t *nm, const void *hdr, size_t idx, size_t i)
             nm->len++;
             nm->symbols = realloc(nm->symbols, nm->len * sizeof(symbol_t));
             nm->symbols[nm->len - 1].value = _SYM(hdr, sym, st_value);
-            nm->symbols[nm->len - 1].type = get_scope(sym, type);
+            nm->symbols[nm->len - 1].type = get_scope(hdr, sym, type);
             nm->symbols[nm->len - 1].name = name;
         }
     }
