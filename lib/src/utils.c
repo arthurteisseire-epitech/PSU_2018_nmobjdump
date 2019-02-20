@@ -12,7 +12,7 @@
 
 const void *first_shdr(const void *hdr)
 {
-    return ((Elf64_Shdr *) ((void *) hdr + _M(hdr, e_shoff)));
+    return (hdr + _M(hdr, e_shoff));
 }
 
 const void *sec(const void *hdr, size_t idx)
