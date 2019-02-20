@@ -24,6 +24,7 @@ typedef union shdr_s {
 } shdr_t;
 
 typedef union sym_s {
+    const void *u;
     const Elf64_Sym *member_64;
     const Elf32_Sym *member_32;
 } sym_t;
@@ -34,12 +35,15 @@ typedef union sym_s {
 #define _SI(hdr, idx, m_name) (get_arch(hdr) == 64 ?\
     ((shdr_t)sec(hdr, idx)).member_64->m_name : ((shdr_t)sec(hdr, idx)).member_32->m_name)
 
+#define _SYM(hdr, sym, m_name) (get_arch(hdr) == 64 ?\
+    ((sym_t)sym).member_64->m_name : ((sym_t)sym).member_32->m_name)
+
 int check_supported(const void *hdr, const char *filename);
 void *file_to_hdr(const char *prog, const char *filename);
 
 int error(const char *message, ...);
 
-Elf64_Sym *get_symbol(const void *hdr, size_t idx);
+const Elf64_Sym * get_symbol(const void *hdr, size_t idx);
 const void *sec(const void *hdr, size_t idx);
 const void *first_shdr(const void *hdr);
 unsigned get_arch(const void *hdr);

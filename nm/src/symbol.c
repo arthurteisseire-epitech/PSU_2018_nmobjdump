@@ -38,37 +38,38 @@ static char section_type(const void *hdr, size_t idx)
     return ('?');
 }
 
-static char get_char_type(const void *hdr, const Elf64_Sym *sym)
+static char get_char_type(const void *hdr, const void *sym)
 {
-    if (sym->st_shndx == SHN_ABS)
+    if (_SYM(hdr, sym, st_shndx) == SHN_ABS)
         return ('A');
-    if (sym->st_shndx == SHN_COMMON)
+    if (_SYM(hdr, sym, st_shndx) == SHN_COMMON)
         return ('C');
-    if (ELF64_ST_BIND(sym->st_info) == STB_WEAK) {
-        if (ELF64_ST_TYPE(sym->st_info) == STT_OBJECT)
+    if (ELF64_ST_BIND(_SYM(hdr, sym, st_info)) == STB_WEAK) {
+        if (ELF64_ST_TYPE(_SYM(hdr, sym, st_info)) == STT_OBJECT)
             return ('V');
-        if (sym->st_shndx == SHN_UNDEF)
+        if (_SYM(hdr, sym, st_shndx) == SHN_UNDEF)
             return ('w');
         return ('W');
     }
-    if (sym->st_shndx == SHN_UNDEF)
+    if (_SYM(hdr, sym, st_shndx) == SHN_UNDEF)
         return ('U');
-    return (section_type(hdr, sym->st_shndx));
+    return (section_type(hdr, _SYM(hdr, sym, st_shndx)));
 }
 
 void add_symbol(nm_t *nm, const void *hdr, size_t idx, size_t i)
 {
     size_t str_off = _SI(hdr, _SI(hdr, idx, sh_link), sh_offset);
-    Elf64_Sym *sym = get_symbol(hdr + _SI(hdr, idx, sh_offset), i);
-    char *name = (char *) hdr + str_off + sym->st_name;
+    const void *sym = get_symbol(hdr + _SI(hdr, idx, sh_offset), i);
+    char *name = (char *) hdr + str_off + _SYM(hdr, sym, st_name);
     char type;
 
-    if (sym->st_name != 0 && ELF64_ST_TYPE(sym->st_info) != STT_FILE) {
+    if (_SYM(hdr, sym, st_name) != 0 &&
+    ELF64_ST_TYPE(_SYM(hdr, sym, st_info)) != STT_FILE) {
         type = get_char_type(hdr, sym);
         if (type != '?') {
             nm->len++;
             nm->symbols = realloc(nm->symbols, nm->len * sizeof(symbol_t));
-            nm->symbols[nm->len - 1].value = sym->st_value;
+            nm->symbols[nm->len - 1].value = _SYM(hdr, sym, st_value);
             nm->symbols[nm->len - 1].type = get_scope(sym, type);
             nm->symbols[nm->len - 1].name = name;
         }

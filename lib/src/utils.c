@@ -20,7 +20,7 @@ const void *sec(const void *hdr, size_t idx)
     return (first_shdr(hdr) + _E(hdr, e_shentsize) * idx);
 }
 
-Elf64_Sym *get_symbol(const void *hdr, size_t idx)
+const Elf64_Sym * get_symbol(const void *hdr, size_t idx)
 {
     return (&((Elf64_Sym *) hdr)[idx]);
 }
