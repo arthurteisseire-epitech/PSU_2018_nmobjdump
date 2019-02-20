@@ -29,11 +29,11 @@ static char get_scope(const Elf64_Sym *sym, char c)
     return (c);
 }
 
-static char section_type(const Elf64_Shdr *section)
+static char section_type(const void *hdr, size_t idx)
 {
     for (int i = 0; types[i].c; ++i)
-        if (types[i].type == section->sh_type &&
-            types[i].flag == section->sh_flags)
+        if (types[i].type == _SI(hdr, idx, sh_type) &&
+            types[i].flag == _SI(hdr, idx, sh_flags))
             return (types[i].c);
     return ('?');
 }
@@ -53,7 +53,7 @@ static char get_char_type(const void *hdr, const Elf64_Sym *sym)
     }
     if (sym->st_shndx == SHN_UNDEF)
         return ('U');
-    return (section_type(sec(hdr, sym->st_shndx)));
+    return (section_type(hdr, sym->st_shndx));
 }
 
 void add_symbol(nm_t *nm, const void *hdr, size_t idx, size_t i)
