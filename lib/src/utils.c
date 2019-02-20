@@ -8,6 +8,7 @@
 #include <stddef.h>
 #include <elf.h>
 #include <string.h>
+#include "lib.h"
 
 Elf64_Shdr *first_shdr(const Elf64_Ehdr *hdr)
 {

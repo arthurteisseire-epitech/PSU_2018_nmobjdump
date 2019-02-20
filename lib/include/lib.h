@@ -12,6 +12,7 @@
 #include <stddef.h>
 
 typedef union ehdr_s {
+    const void *u;
     Elf64_Ehdr *member_64;
     Elf32_Ehdr *member_32;
 } ehdr_t;
@@ -27,7 +28,7 @@ typedef union sym_s {
 } sym_t;
 
 #define _M(hdr, m_name) (get_arch(hdr) == 64 ?\
-    hdr->member_64->m_name : hdr->member_32->m_name)
+    ((ehdr_t)hdr).member_64->m_name : ((ehdr_t)hdr).member_32->m_name)
 
 int check_supported(Elf64_Ehdr *hdr, const char *filename);
 void *file_to_hdr(const char *prog, const char *filename);

@@ -9,6 +9,7 @@
 #define PSU_2018_NMOBJDUMP_OBJDUMP_H
 
 #include <elf.h>
+#include "lib.h"
 
 #define NO_FLAGS    0x00
 #define HAS_RELOC    0x01
