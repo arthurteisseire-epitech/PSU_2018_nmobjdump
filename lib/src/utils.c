@@ -10,12 +10,12 @@
 #include <string.h>
 #include "lib.h"
 
-Elf64_Shdr *first_shdr(const void *hdr)
+const Elf64_Shdr *first_shdr(const void *hdr)
 {
     return ((Elf64_Shdr *) ((void *) hdr + _M(hdr, e_shoff)));
 }
 
-Elf64_Shdr *sec(const void *hdr, size_t idx)
+const Elf64_Shdr *sec(const void *hdr, size_t idx)
 {
     return (&first_shdr(hdr)[idx]);
 }

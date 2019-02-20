@@ -57,8 +57,8 @@ static void add_section_symbols(nm_t *nm, const void *hdr, size_t idx)
 {
     size_t nb_symbols = 0;
 
-    if (sec(hdr, idx)->sh_entsize != 0)
-        nb_symbols = sec(hdr, idx)->sh_size / sec(hdr, idx)->sh_entsize;
+    if (_SI(hdr, idx, sh_entsize) != 0)
+        nb_symbols = _SI(hdr, idx, sh_size) / _SI(hdr, idx, sh_entsize);
     for (size_t i = 0; i < nb_symbols; ++i)
         add_symbol(nm, hdr, idx, i);
 }
@@ -69,7 +69,7 @@ bool print_file_symbols(const void *hdr, size_t shnum)
     bool is_symbols;
 
     for (size_t i = 0; i < shnum; ++i)
-        if (sec(hdr, i)->sh_type == SHT_SYMTAB)
+        if (_SI(hdr, i, sh_type) == SHT_SYMTAB)
             add_section_symbols(nm, hdr, i);
     qsort(nm->symbols, nm->len, sizeof(symbol_t),
     (int (*)(const void *, const void *)) cmp);

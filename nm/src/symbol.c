@@ -58,8 +58,8 @@ static char get_char_type(const void *hdr, const Elf64_Sym *sym)
 
 void add_symbol(nm_t *nm, const void *hdr, size_t idx, size_t i)
 {
-    Elf64_Shdr *strtab = sec(hdr, sec(hdr, idx)->sh_link);
-    Elf64_Sym *sym = get_symbol(hdr + sec(hdr, idx)->sh_offset, i);
+    const Elf64_Shdr *strtab = sec(hdr, _SI(hdr, idx, sh_link));
+    Elf64_Sym *sym = get_symbol(hdr + _SI(hdr, idx, sh_offset), i);
     char *name = (char *) hdr + strtab->sh_offset + sym->st_name;
     char type;
 

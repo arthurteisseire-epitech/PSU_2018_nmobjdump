@@ -13,15 +13,15 @@
 
 static bool is_section_printable(const void *hdr, size_t idx)
 {
-    return (sec(hdr, idx)->sh_type != SHT_NOBITS &&
-    sec(hdr, idx)->sh_type != SHT_NULL &&
-    strcmp(find_string(hdr, sec(hdr, idx)->sh_name), ".strtab") != 0 &&
-    strcmp(find_string(hdr, sec(hdr, idx)->sh_name), ".symtab") != 0 &&
-    strcmp(find_string(hdr, sec(hdr, idx)->sh_name), ".shstrtab") != 0 &&
-    strcmp(find_string(hdr, sec(hdr, idx)->sh_name), ".bss") != 0 &&
-    strcmp(find_string(hdr, sec(hdr, idx)->sh_name), ".rela.text") != 0 &&
-    strcmp(find_string(hdr, sec(hdr, idx)->sh_name), ".rela.eh_frame") != 0 &&
-    sec(hdr, idx)->sh_size != 0);
+    return (_SI(hdr, idx, sh_type) != SHT_NOBITS &&
+    _SI(hdr, idx, sh_type) != SHT_NULL &&
+    strcmp(find_string(hdr, _SI(hdr, idx, sh_name)), ".strtab") != 0 &&
+    strcmp(find_string(hdr, _SI(hdr, idx, sh_name)), ".symtab") != 0 &&
+    strcmp(find_string(hdr, _SI(hdr, idx, sh_name)), ".shstrtab") != 0 &&
+    strcmp(find_string(hdr, _SI(hdr, idx, sh_name)), ".bss") != 0 &&
+    strcmp(find_string(hdr, _SI(hdr, idx, sh_name)), ".rela.text") != 0 &&
+    strcmp(find_string(hdr, _SI(hdr, idx, sh_name)), ".rela.eh_frame") != 0 &&
+    _SI(hdr, idx, sh_size) != 0);
 }
 
 void print_sections(const void *hdr, size_t shnum)
