@@ -14,7 +14,7 @@ int check_file_format(const void *hdr, const char *filename)
 {
     const char magic[] = {0x7f, 'E', 'L', 'F'};
 
-    if (memcmp(_M(hdr, e_ident), magic, 4) != 0)
+    if (memcmp(_E(hdr, e_ident), magic, 4) != 0)
         return (error("%s: file format not recognized\n", filename));
     return (0);
 }
@@ -27,13 +27,13 @@ int check_supported(const void *hdr, const char *filename)
         return (status);
     if (get_arch(hdr) == 0)
         return (error("Unknown architecture\n"));
-    if (_M(hdr, e_ident)[EI_DATA] == ELFDATANONE)
+    if (_E(hdr, e_ident)[EI_DATA] == ELFDATANONE)
         return (error("Unknown byte order\n"));
-    if (_M(hdr, e_ident)[EI_VERSION] == EV_NONE)
+    if (_E(hdr, e_ident)[EI_VERSION] == EV_NONE)
         return (error("Unknown version\n"));
-    if (_M(hdr, e_machine) == EM_NONE)
+    if (_E(hdr, e_machine) == EM_NONE)
         return (error("Unknown machine\n"));
-    if (_M(hdr, e_type) == ET_NONE)
+    if (_E(hdr, e_type) == ET_NONE)
         return (error("Unknown file type"));
     return (0);
 }

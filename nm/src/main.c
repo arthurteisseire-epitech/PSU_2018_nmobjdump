@@ -15,7 +15,7 @@ static void arch_exec(const void *hdr, const char *filename, int ac)
 {
     if (ac >= 3)
         printf("\n%s:\n", filename);
-    if (!print_file_symbols(hdr, _M(hdr, e_shnum)))
+    if (!print_file_symbols(hdr, _E(hdr, e_shnum)))
         printf("nm: %s: no symbols\n", filename);
 }
 

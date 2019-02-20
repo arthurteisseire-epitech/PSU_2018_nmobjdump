@@ -28,7 +28,7 @@ typedef union sym_s {
     const Elf32_Sym *member_32;
 } sym_t;
 
-#define _M(hdr, m_name) (get_arch(hdr) == 64 ?\
+#define _E(hdr, m_name) (get_arch(hdr) == 64 ?\
     ((ehdr_t)hdr).member_64->m_name : ((ehdr_t)hdr).member_32->m_name)
 
 #define _SI(hdr, idx, m_name) (get_arch(hdr) == 64 ?\

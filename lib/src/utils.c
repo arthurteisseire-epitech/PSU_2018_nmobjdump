@@ -12,12 +12,12 @@
 
 const void *first_shdr(const void *hdr)
 {
-    return (hdr + _M(hdr, e_shoff));
+    return (hdr + _E(hdr, e_shoff));
 }
 
 const void *sec(const void *hdr, size_t idx)
 {
-    return (first_shdr(hdr) + _M(hdr, e_shentsize) * idx);
+    return (first_shdr(hdr) + _E(hdr, e_shentsize) * idx);
 }
 
 Elf64_Sym *get_symbol(const void *hdr, size_t idx)

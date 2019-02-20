@@ -11,9 +11,9 @@
 
 void *find_string_table(const void *hdr)
 {
-    if (_M(hdr, e_shstrndx) == SHN_UNDEF)
+    if (_E(hdr, e_shstrndx) == SHN_UNDEF)
         return (NULL);
-    return ((void *) hdr + _SI(hdr, _M(hdr, e_shstrndx), sh_offset));
+    return ((void *) hdr + _SI(hdr, _E(hdr, e_shstrndx), sh_offset));
 }
 
 char *find_string(const void *hdr, int offset)
