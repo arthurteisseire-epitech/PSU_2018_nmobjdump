@@ -9,11 +9,11 @@
 #include <stddef.h>
 #include "lib.h"
 
-void *find_string_table(const Elf64_Ehdr *hdr)
+void *find_string_table(const void *hdr)
 {
-    if (hdr->e_shstrndx == SHN_UNDEF)
+    if (_M(hdr, e_shstrndx) == SHN_UNDEF)
         return (NULL);
-    return ((void *) hdr + sec(hdr, hdr->e_shstrndx)->sh_offset);
+    return ((void *) hdr + sec(hdr, _M(hdr, e_shstrndx))->sh_offset);
 }
 
 char *find_string(const Elf64_Ehdr *hdr, int offset)

@@ -10,9 +10,9 @@
 #include <string.h>
 #include "lib.h"
 
-Elf64_Shdr *first_shdr(const Elf64_Ehdr *hdr)
+Elf64_Shdr *first_shdr(const void *hdr)
 {
-    return ((Elf64_Shdr *) ((void *) hdr + hdr->e_shoff));
+    return ((Elf64_Shdr *) ((void *) hdr + _M(hdr, e_shoff)));
 }
 
 Elf64_Shdr *sec(const Elf64_Ehdr *hdr, size_t idx)
