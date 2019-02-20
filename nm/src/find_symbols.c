@@ -42,14 +42,17 @@ int cmp(const symbol_t *a, const symbol_t *b)
     return (res);
 }
 
-static void print_symbols(nm_t *nm)
+static void print_symbols(nm_t *nm, const void *hdr)
 {
     for (size_t i = 0; i < nm->len; ++i) {
-        if (nm->symbols[i].value)
-            printf("%016x %c %s\n", (unsigned) nm->symbols[i].value,
+        if (nm->symbols[i].value == 0)
+            printf("%18c %s\n", nm->symbols[i].type, nm->symbols[i].name);
+        else if (get_arch(hdr) == 64)
+            printf("%016x %c %s\n", nm->symbols[i].value,
             nm->symbols[i].type, nm->symbols[i].name);
         else
-            printf("%18c %s\n", nm->symbols[i].type, nm->symbols[i].name);
+            printf("%08x %c %s\n", nm->symbols[i].value,
+            nm->symbols[i].type, nm->symbols[i].name);
     }
 }
 
@@ -73,7 +76,7 @@ bool print_file_symbols(const void *hdr, size_t shnum)
             add_section_symbols(nm, hdr, i);
     qsort(nm->symbols, nm->len, sizeof(symbol_t),
     (int (*)(const void *, const void *)) cmp);
-    print_symbols(nm);
+    print_symbols(nm, hdr);
     free(nm->symbols);
     is_symbols = nm->len != 0;
     free(nm);

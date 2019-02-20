@@ -13,7 +13,7 @@
 #include <elf.h>
 
 typedef struct symbol_s {
-    Elf64_Addr value;
+    unsigned value;
     char type;
     char *name;
 } symbol_t;
