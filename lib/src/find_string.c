@@ -16,7 +16,7 @@ void *find_string_table(const void *hdr)
     return ((void *) hdr + sec(hdr, _M(hdr, e_shstrndx))->sh_offset);
 }
 
-char *find_string(const Elf64_Ehdr *hdr, int offset)
+char *find_string(const void *hdr, int offset)
 {
     void *string_table = find_string_table(hdr);
 

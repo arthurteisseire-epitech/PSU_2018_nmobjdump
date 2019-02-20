@@ -11,7 +11,7 @@
 #include "objdump.h"
 #include "lib.h"
 
-static bool is_section_printable(const Elf64_Ehdr *hdr, size_t idx)
+static bool is_section_printable(const void *hdr, size_t idx)
 {
     return (sec(hdr, idx)->sh_type != SHT_NOBITS &&
     sec(hdr, idx)->sh_type != SHT_NULL &&

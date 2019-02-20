@@ -35,8 +35,8 @@ void *file_to_hdr(const char *prog, const char *filename);
 
 int error(const char *message, ...);
 
-Elf64_Sym *get_symbol(const Elf64_Ehdr *hdr, size_t idx);
-Elf64_Shdr *sec(const Elf64_Ehdr *hdr, size_t idx);
+Elf64_Sym *get_symbol(const void *hdr, size_t idx);
+Elf64_Shdr *sec(const void *hdr, size_t idx);
 Elf64_Shdr *first_shdr(const void *hdr);
 unsigned get_arch(const void *hdr);
 
@@ -47,6 +47,6 @@ int exec_main(int ac, const char **av, const char *prog_name,
 void (*ex)(const void *, const char *, int));
 
 void *find_string_table(const void *hdr);
-char *find_string(const Elf64_Ehdr *hdr, int offset);
+char *find_string(const void *hdr, int offset);
 
 #endif
