@@ -45,7 +45,7 @@ int cmp(const symbol_t *a, const symbol_t *b)
 static void print_symbols(nm_t *nm, const void *hdr)
 {
     for (size_t i = 0; i < nm->len; ++i) {
-        if (nm->symbols[i].value == 0)
+        if (nm->symbols[i].type == 'U' || nm->symbols[i].type == 'w')
             printf("%18c %s\n", nm->symbols[i].type, nm->symbols[i].name);
         else if (get_arch(hdr) == 64)
             printf("%016x %c %s\n", nm->symbols[i].value,
