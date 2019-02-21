@@ -39,7 +39,7 @@ typedef union sym_s {
 #define _SYM(hdr, sym, m_name) (get_arch(hdr) == 64 ?\
     ((sym_t)sym).member_64->m_name : ((sym_t)sym).member_32->m_name)
 
-int check_supported(const void *hdr, const char *filename);
+int check_supported(const void *hdr, const char *filename, const char *prog);
 void *file_to_hdr(const char *prog, const char *filename);
 
 int error(const char *message, ...);

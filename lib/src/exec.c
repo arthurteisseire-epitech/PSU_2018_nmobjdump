@@ -21,7 +21,7 @@ void (*ex)(const void *, const char *, int))
 
     for (int i = 1; i < ac; ++i) {
         hdr = file_to_hdr(prog_name, av[i]);
-        if (hdr && check_supported(hdr, av[i]) == 0)
+        if (hdr && check_supported(hdr, av[i], prog_name) == 0)
             exec_all_object_files(hdr, av[i], ac, ex);
         else
             status = 84;

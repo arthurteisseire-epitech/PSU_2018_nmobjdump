@@ -57,7 +57,7 @@ void *file_to_hdr(const char *prog, const char *filename)
         error("%s: '%s': No such file\n", prog, filename);
         return (NULL);
     }
-    hdr = fd_to_hdr(fd, filename);
+    hdr = fd_to_hdr(fd, filename, prog);
     close(fd);
     return (hdr);
 }

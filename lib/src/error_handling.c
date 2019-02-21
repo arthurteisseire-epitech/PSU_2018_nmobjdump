@@ -10,18 +10,19 @@
 #include <string.h>
 #include "lib.h"
 
-int check_file_format(const void *hdr, const char *filename)
+static int check_file_format(const void *hdr, const char *filename,
+const char *prog)
 {
     const char magic[] = {0x7f, 'E', 'L', 'F'};
 
     if (memcmp(_E(hdr, e_ident), magic, 4) != 0)
-        return (error("%s: File format not recognized\n", filename));
+        return (error("%s: %s: File format not recognized\n", filename, prog));
     return (0);
 }
 
-int check_supported(const void *hdr, const char *filename)
+int check_supported(const void *hdr, const char *filename, const char *prog)
 {
-    int status = check_file_format(hdr, filename);
+    int status = check_file_format(hdr, filename, prog);
 
     if (status != 0)
         return (status);
