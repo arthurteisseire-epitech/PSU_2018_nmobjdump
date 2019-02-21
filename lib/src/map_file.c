@@ -22,13 +22,15 @@ static void *fd_to_hdr(int fd, const char *filename, const char *prog)
     void *buf;
 
     fstat(fd, &s);
-    if (s.st_size < (long) sizeof(Elf64_Ehdr)) {
-        fprintf(stdout, "%s: %s: File format not recognized\n", prog, filename);
-        return (NULL);
-    }
-    buf = mmap(NULL, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
+    buf = mmap(NULL, (size_t) s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
     if (buf != MAP_FAILED)
         return (buf);
+    if (s.st_size < (long) sizeof(Elf64_Ehdr) ||
+    (unsigned) s.st_size <
+    _E(buf, e_shoff) + _E(buf, e_shnum) * _E(buf, e_shentsize)) {
+        fprintf(stderr, "%s: %s: File format not recognized\n", prog, filename);
+        return (NULL);
+    }
     perror("mmap");
     return (NULL);
 }

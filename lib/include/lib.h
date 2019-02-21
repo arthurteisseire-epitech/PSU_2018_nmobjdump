@@ -12,19 +12,22 @@
 #include <stddef.h>
 
 typedef union ehdr_s {
-    const void *u;
+    const void *cu;
+    void *u;
     const Elf64_Ehdr *member_64;
     const Elf32_Ehdr *member_32;
 } ehdr_t;
 
 typedef union shdr_s {
-    const void *u;
+    const void *cu;
+    void *u;
     const Elf64_Shdr *member_64;
     const Elf32_Shdr *member_32;
 } shdr_t;
 
 typedef union sym_s {
-    const void *u;
+    const void *cu;
+    void *u;
     const Elf64_Sym *member_64;
     const Elf32_Sym *member_32;
 } sym_t;
