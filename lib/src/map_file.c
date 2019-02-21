@@ -16,14 +16,14 @@
 #include <string.h>
 #include "lib.h"
 
-static void *fd_to_hdr(int fd, const char *filename)
+static void *fd_to_hdr(int fd, const char *filename, const char *prog)
 {
     struct stat s;
     void *buf;
 
     fstat(fd, &s);
     if (s.st_size < (long) sizeof(Elf64_Ehdr)) {
-        fprintf(stdout, "nm: %s: File format not recognized\n", filename);
+        fprintf(stdout, "%s: %s: File format not recognized\n", prog, filename);
         return (NULL);
     }
     buf = mmap(NULL, s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
