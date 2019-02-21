@@ -8,13 +8,13 @@
 #include "lib.h"
 
 void exec_all_object_files(const void *hdr, const char *filename, int ac,
-void (*ex)(const void *, const char *, int))
+    void (*ex)(const void *, const char *, int))
 {
     ex(hdr, filename, ac);
 }
 
 int exec(int ac, const char **av, const char *prog_name,
-void (*ex)(const void *, const char *, int))
+    void (*ex)(const void *, const char *, int))
 {
     void *hdr;
     int status = 0;
@@ -30,7 +30,7 @@ void (*ex)(const void *, const char *, int))
 }
 
 int exec_main(int ac, const char **av, const char *prog_name,
-void (*ex)(const void *, const char *, int))
+    void (*ex)(const void *, const char *, int))
 {
     if (ac == 1)
         return (exec(2, (const char *[]) {"", "a.out"}, prog_name, ex));
