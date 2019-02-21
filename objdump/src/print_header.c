@@ -22,8 +22,10 @@ void print_all_flags(const void *hdr, uint16_t type, size_t shnum)
     print_flags(flags, 0, "");
 }
 
-void print_address(size_t entry)
+void print_address(const void *hdr, size_t entry)
 {
-    printf("\nstart address 0x%016lx\n\n", entry);
+    int n = get_arch(hdr) == 64 ? 16 : 8;
+
+    printf("\nstart address 0x%0*lx\n\n", n, entry);
 }
 

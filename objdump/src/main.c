@@ -18,7 +18,7 @@ __attribute((unused)) int ac)
         printf("\n%s:     file format elf32-i386\n", filename);
     print_architecture(_E(hdr, e_machine));
     print_all_flags(hdr, _E(hdr, e_type), _E(hdr, e_shnum));
-    print_address(_E(hdr, e_entry));
+    print_address(hdr, _E(hdr, e_entry));
     print_sections(hdr, _E(hdr, e_shnum));
 }
 

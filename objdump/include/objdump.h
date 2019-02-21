@@ -44,6 +44,6 @@ unsigned int get_flags(const void *hdr, uint16_t elf_type, size_t shnum);
 
 void print_architecture(Elf64_Half machine);
 void print_all_flags(const void *hdr, uint16_t type, size_t shnum);
-void print_address(size_t entry);
+void print_address(const void *hdr, size_t entry);
 
 #endif
