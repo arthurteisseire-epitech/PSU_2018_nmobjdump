@@ -9,7 +9,7 @@
 #include "lib.h"
 #include "nm.h"
 
-void print_sym(const nm_t *nm, const void *hdr, size_t i)
+static void print_sym(const nm_t *nm, const void *hdr, size_t i)
 {
     if (nm->symbols[i].type == 'U' || nm->symbols[i].type == 'w') {
         if (get_arch(hdr) == 64)
