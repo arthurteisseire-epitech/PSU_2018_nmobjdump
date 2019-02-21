@@ -33,7 +33,8 @@ typedef union sym_s {
     ((ehdr_t)hdr).member_64->m_name : ((ehdr_t)hdr).member_32->m_name)
 
 #define _SI(hdr, idx, m_name) (get_arch(hdr) == 64 ?\
-    ((shdr_t)sec(hdr, idx)).member_64->m_name : ((shdr_t)sec(hdr, idx)).member_32->m_name)
+    ((shdr_t)sec(hdr, idx)).member_64->m_name :\
+    ((shdr_t)sec(hdr, idx)).member_32->m_name)
 
 #define _SYM(hdr, sym, m_name) (get_arch(hdr) == 64 ?\
     ((sym_t)sym).member_64->m_name : ((sym_t)sym).member_32->m_name)
