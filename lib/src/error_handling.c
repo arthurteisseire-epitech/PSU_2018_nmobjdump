@@ -15,7 +15,7 @@ int check_file_format(const void *hdr, const char *filename)
     const char magic[] = {0x7f, 'E', 'L', 'F'};
 
     if (memcmp(_E(hdr, e_ident), magic, 4) != 0)
-        return (error("%s: file format not recognized\n", filename));
+        return (error("%s: File format not recognized\n", filename));
     return (0);
 }
 
