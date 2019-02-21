@@ -32,5 +32,6 @@ typedef struct map_s {
 bool print_file_symbols(const void *hdr, size_t shnum);
 void add_symbol(nm_t *nm, const void *hdr, size_t idx,
                 size_t i);
+void print_symbols(nm_t *nm, const void *hdr);
 
 #endif
