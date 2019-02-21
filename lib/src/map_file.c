@@ -47,12 +47,19 @@ static int is_dir(const char *prog, const char *filename)
     return (0);
 }
 
+static int check_access(const char *prog, const char *filename)
+{
+    if (access(filename, R_OK) != 0)
+        return (error("%s: %s: Permission denied\n", prog, filename));
+    return (0);
+}
+
 void *file_to_hdr(const char *prog, const char *filename)
 {
     int fd;
     void *hdr;
 
-    if (is_dir(prog, filename))
+    if (check_access(prog, filename) != 0 || is_dir(prog, filename))
         return (NULL);
     fd = open(filename, O_RDONLY);
     if (fd == -1) {
