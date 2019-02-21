@@ -12,7 +12,7 @@
 static void arch_exec(const void *hdr, const char *filename,
 __attribute((unused)) int ac)
 {
-    printf("\n%s:     file format elf64-x86-64\n", filename);
+    printf("\n%s:     File format elf64-x86-64\n", filename);
     print_architecture(_E(hdr, e_machine));
     print_all_flags(hdr, _E(hdr, e_type), _E(hdr, e_shnum));
     print_address(_E(hdr, e_entry));
