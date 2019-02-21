@@ -14,7 +14,7 @@ static const map_t machines[] = {
         {EM_NONE,        "None"},
         {EM_M32,         "WE32100"},
         {EM_SPARC,       "Sparc"},
-        {EM_386,         "Intel 80386"},
+        {EM_386,         "i386"},
         {EM_68K,         "MC68000"},
         {EM_88K,         "MC88000"},
         {EM_860,         "Intel 80860"},
