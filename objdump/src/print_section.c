@@ -25,7 +25,7 @@ void print_byte(const unsigned char *section, size_t i)
     printf("%02x", section[i]);
 }
 
-int get_nb_bytes(int n)
+int get_index(int n)
 {
     int nb_bytes = 0;
 
@@ -41,7 +41,7 @@ void print_index_on_new_line(const void *hdr, size_t idx, unsigned int i)
     int size = _SI(hdr, idx, sh_addr) + _SI(hdr, idx, sh_size);
 
     if (bytes_on_raw(i) == 1)
-        printf(" %0*x", get_nb_bytes(size), i + (unsigned) _SI(hdr, idx, sh_addr));
+        printf(" %0*x", get_index(size), i + (unsigned) _SI(hdr, idx, sh_addr));
 }
 
 void print_section(const void *hdr, size_t idx)
