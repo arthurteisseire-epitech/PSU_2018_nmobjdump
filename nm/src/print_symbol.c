@@ -13,7 +13,8 @@ static void print_sym(const nm_t *nm, const void *hdr, size_t i)
 {
     int n = get_arch(hdr) == 64 ? 16 : 8;
 
-    if (nm->symbols[i].type == 'U' || nm->symbols[i].type == 'w')
+    if (nm->symbols[i].type == 'U' || nm->symbols[i].type == 'w'
+    || nm->symbols[i].type == 'v')
         printf("%*c %s\n", n + 2, nm->symbols[i].type, nm->symbols[i].name);
     else
         printf("%0*x %c %s\n", n, nm->symbols[i].value,

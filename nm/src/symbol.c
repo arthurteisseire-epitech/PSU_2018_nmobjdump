@@ -46,10 +46,8 @@ static char get_char_type(const void *hdr, const void *sym)
         return ('C');
     if (ELF64_ST_BIND(_SYM(hdr, sym, st_info)) == STB_WEAK) {
         if (ELF64_ST_TYPE(_SYM(hdr, sym, st_info)) == STT_OBJECT)
-            return ('V');
-        if (_SYM(hdr, sym, st_shndx) == SHN_UNDEF)
-            return ('w');
-        return ('W');
+            return (_SYM(hdr, sym, st_shndx) == SHN_UNDEF ? 'v' : 'V');
+        return (_SYM(hdr, sym, st_shndx) == SHN_UNDEF ? 'w' : 'W');
     }
     if (_SYM(hdr, sym, st_shndx) == SHN_UNDEF)
         return ('U');
