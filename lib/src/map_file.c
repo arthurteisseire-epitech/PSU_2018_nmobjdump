@@ -27,7 +27,7 @@ static void *fd_to_hdr(int fd, const char *filename, const char *prog)
     if (buf == MAP_FAILED)
         return (NULL);
     off = _E(buf, e_shoff) + _E(buf, e_shnum) * _E(buf, e_shentsize);
-    if (s.st_size == 1 || s.st_size < _E(buf, e_ehsize) || s.st_size < off) {
+    if (s.st_size < 4 || s.st_size < _E(buf, e_ehsize) || s.st_size < off) {
         fprintf(stderr, "%s: %s: File truncated\n", prog, filename);
         return (NULL);
     }
