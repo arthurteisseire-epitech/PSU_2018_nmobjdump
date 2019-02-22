@@ -29,9 +29,8 @@ const void *get_symbol(const void *hdr, size_t shdr_idx, size_t idx)
 
 unsigned get_arch(const void *hdr)
 {
-    char ident[EI_NIDENT];
+    const char *ident = hdr;
 
-    memcpy(ident, hdr, EI_NIDENT);
     if (ident[EI_CLASS] == ELFCLASS32)
         return (32);
     else if (ident[EI_CLASS] == ELFCLASS64)
