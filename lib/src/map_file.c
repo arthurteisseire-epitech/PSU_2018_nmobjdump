@@ -48,6 +48,8 @@ static int is_dir(const char *prog, const char *filename)
 
 static int check_access(const char *prog, const char *filename)
 {
+    if (access(filename, F_OK) != 0)
+        return (error("%s: %s: No such file\n", prog, filename));
     if (access(filename, R_OK) != 0)
         return (error("%s: %s: Permission denied\n", prog, filename));
     return (0);
