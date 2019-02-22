@@ -10,8 +10,8 @@
 #include "lib.h"
 
 static const map_t machines[] = {
-        {EM_X86_64,      "i386:x86-64"},
-        {EM_386,         "i386"},
+        {EM_X86_64, "i386:x86-64"},
+        {EM_386,    "i386"},
         {0, NULL}
 };
 
@@ -51,7 +51,7 @@ const char *get_machine_name(Elf64_Half machine)
     for (int i = 0; machines[i].name; ++i)
         if (machine == machines[i].byte)
             return (machines[i].name);
-    return machines[0].name;
+    return (machines[0].name);
 }
 
 unsigned int sym_flags(const void *hdr, size_t shnum)

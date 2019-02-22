@@ -20,19 +20,20 @@ static void *fd_to_hdr(int fd, const char *filename, const char *prog)
 {
     struct stat s;
     void *buf;
+    unsigned off;
 
     fstat(fd, &s);
     buf = mmap(NULL, (size_t) s.st_size, PROT_READ, MAP_PRIVATE, fd, 0);
-    if (buf != MAP_FAILED)
-        return (buf);
-    if (s.st_size < (long) sizeof(Elf64_Ehdr) ||
-    (unsigned) s.st_size <
-    _E(buf, e_shoff) + _E(buf, e_shnum) * _E(buf, e_shentsize)) {
-        fprintf(stderr, "%s: %s: File format not recognized\n", prog, filename);
+    if (buf == MAP_FAILED) {
+        perror("mmap");
         return (NULL);
     }
-    perror("mmap");
-    return (NULL);
+    off = _E(buf, e_shoff) + _E(buf, e_shnum) * _E(buf, e_shentsize);
+    if (s.st_size < _E(buf, e_ehsize) || s.st_size < off) {
+        fprintf(stderr, "%s: %s: File truncated\n", prog, filename);
+        return (NULL);
+    }
+    return (buf);
 }
 
 static int is_dir(const char *prog, const char *filename)
