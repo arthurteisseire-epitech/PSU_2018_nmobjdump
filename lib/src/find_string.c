@@ -24,4 +24,3 @@ char *find_string(const void *hdr, int offset)
         return (NULL);
     return (string_table + offset);
 }
-

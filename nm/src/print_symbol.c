@@ -26,4 +26,3 @@ void print_symbols(nm_t *nm, const void *hdr)
     for (size_t i = 0; i < nm->len; ++i)
         print_sym(nm, hdr, i);
 }
-
