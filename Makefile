@@ -1,8 +1,8 @@
 ##
-## EPITECH PROJECT, 2017
-## File Name : Makefile
+## EPITECH PROJECT, 2018
+## PSU_nmobjdump_2018
 ## File description:
-## Project Name : linked_lists
+## Makefile
 ##
 
 MODULES	=	lib		\
