@@ -6,7 +6,7 @@ test_prog () {
     if [ $? = 0 ]; then
         echo "ok"
     else
-        echo "$3 differs : wrinting differ output in log_$3.txt"
+        echo "$3 differs : writing differ output in log_$3.txt"
         echo "$log" &> log_$3.txt
     fi
 }
