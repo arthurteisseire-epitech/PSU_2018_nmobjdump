@@ -16,6 +16,15 @@
 #include <string.h>
 #include "lib.h"
 
+int check_size(const char *filename, const char *prog, struct stat *s)
+{
+    if ((*s).st_size < 4)
+        return (error("%s: %s: File truncated\n", prog, filename));
+    if ((*s).st_size < (unsigned) sizeof(Elf64_Ehdr))
+        return (error("%s: %s: File format not recognized\n", prog, filename));
+    return (0);
+}
+
 static void *fd_to_hdr(int fd, const char *filename, const char *prog)
 {
     struct stat s;
@@ -27,7 +36,11 @@ static void *fd_to_hdr(int fd, const char *filename, const char *prog)
     if (buf == MAP_FAILED)
         return (NULL);
     off = _E(buf, e_shoff) + _E(buf, e_shnum) * _E(buf, e_shentsize);
-    if (s.st_size < 4 || s.st_size < _E(buf, e_ehsize) || s.st_size < off) {
+    if (check_size(filename, prog, &s) != 0)
+        return (NULL);
+    if (check_supported(buf, filename, prog) != 0)
+        return (NULL);
+    if (s.st_size < _E(buf, e_ehsize) || s.st_size < off) {
         fprintf(stderr, "%s: %s: File truncated\n", prog, filename);
         return (NULL);
     }
