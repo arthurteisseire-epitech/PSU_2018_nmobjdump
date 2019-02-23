@@ -2,7 +2,7 @@
 
 test_prog () {
     echo "testing $3..."
-    log=$(diff <(echo $1) <(echo $2))
+    log=$(diff <(echo "$1") <(echo "$2"))
     if [ $? = 0 ]; then
         echo "ok"
     else
