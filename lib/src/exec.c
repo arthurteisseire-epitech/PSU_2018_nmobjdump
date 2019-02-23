@@ -7,12 +7,6 @@
 
 #include "lib.h"
 
-void exec_all_object_files(const void *hdr, const char *filename, int ac,
-    void (*ex)(const void *, const char *, int))
-{
-    ex(hdr, filename, ac);
-}
-
 int exec(int ac, const char **av, const char *prog_name,
     void (*ex)(const void *, const char *, int))
 {
@@ -22,7 +16,7 @@ int exec(int ac, const char **av, const char *prog_name,
     for (int i = 1; i < ac; ++i) {
         hdr = file_to_hdr(prog_name, av[i]);
         if (hdr)
-            exec_all_object_files(hdr, av[i], ac, ex);
+            ex(hdr, av[i], ac);
         else
             status = 84;
     }
