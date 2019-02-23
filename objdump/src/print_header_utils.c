@@ -57,7 +57,8 @@ const char *get_machine_name(Elf64_Half machine)
 unsigned int sym_flags(const void *hdr, size_t shnum)
 {
     for (size_t i = 0; i < shnum; ++i)
-        if (_SI(hdr, i, sh_type) == SHT_SYMTAB)
+        if (_SI(hdr, i, sh_type) == SHT_SYMTAB ||
+        _SI(hdr, i, sh_type) == SHT_DYNSYM)
             return (HAS_SYMS);
     return (NO_FLAGS);
 }
