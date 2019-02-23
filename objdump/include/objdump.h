@@ -22,8 +22,14 @@
 
 typedef struct map_s {
     uint16_t byte;
-    const char *name;
+    const char *machine;
 } map_t;
+
+typedef struct format_s {
+    uint16_t byte;
+    const char *machine;
+    const char *arch;
+} format_t;
 
 typedef struct flags_s {
     uint32_t type;
@@ -39,6 +45,7 @@ void print_chars(const unsigned char *p, size_t neg_off);
 
 void print_flags(unsigned int flags, unsigned int i, char *comma);
 const char *get_machine_name(Elf64_Half machine);
+const char *get_format(Elf64_Half machine);
 unsigned int sym_flags(const void *hdr, size_t shnum);
 unsigned int get_flags(const void *hdr, uint16_t elf_type, size_t shnum);
 

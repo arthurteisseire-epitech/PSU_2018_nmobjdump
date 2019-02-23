@@ -9,10 +9,10 @@
 #include "objdump.h"
 #include "lib.h"
 
-static const map_t machines[] = {
-        {EM_X86_64, "i386:x86-64"},
-        {EM_386,    "i386"},
-        {0, NULL}
+static const format_t machines[] = {
+        {EM_X86_64, "i386:x86-64", "elf64-x86-64"},
+        {EM_386,    "i386",        "elf32-i386"},
+        {0, NULL, NULL}
 };
 
 static const flags_t type_flags[] = {
@@ -36,10 +36,10 @@ static const map_t flag_names[] = {
 
 void print_flags(unsigned int flags, unsigned int i, char *comma)
 {
-    if (flag_names[i].name) {
+    if (flag_names[i].machine) {
         if (flags && flags >= flag_names[i].byte) {
             print_flags(flags - flag_names[i].byte, i + 1, ", ");
-            printf("%s%s", flag_names[i].name, comma);
+            printf("%s%s", flag_names[i].machine, comma);
         } else {
             print_flags(flags, i + 1, comma);
         }
@@ -48,17 +48,25 @@ void print_flags(unsigned int flags, unsigned int i, char *comma)
 
 const char *get_machine_name(Elf64_Half machine)
 {
-    for (int i = 0; machines[i].name; ++i)
+    for (int i = 0; machines[i].machine; ++i)
         if (machine == machines[i].byte)
-            return (machines[i].name);
-    return (machines[0].name);
+            return (machines[i].machine);
+    return (machines[0].machine);
+}
+
+const char *get_format(Elf64_Half machine)
+{
+    for (int i = 0; machines[i].arch; ++i)
+        if (machine == machines[i].byte)
+            return (machines[i].arch);
+    return (machines[0].arch);
 }
 
 unsigned int sym_flags(const void *hdr, size_t shnum)
 {
     for (size_t i = 0; i < shnum; ++i)
         if (_SI(hdr, i, sh_type) == SHT_SYMTAB ||
-        _SI(hdr, i, sh_type) == SHT_DYNSYM)
+            _SI(hdr, i, sh_type) == SHT_DYNSYM)
             return (HAS_SYMS);
     return (NO_FLAGS);
 }

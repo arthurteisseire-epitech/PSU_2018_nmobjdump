@@ -11,6 +11,7 @@
 
 static void print_architecture(Elf64_Half machine)
 {
+    printf("file format %s\n", get_format(machine));
     printf("architecture: %s, ", get_machine_name(machine));
 }
 
@@ -31,10 +32,7 @@ static void print_address(const void *hdr, size_t entry)
 
 void print_header(const void *hdr, const char *filename)
 {
-    if (get_arch(hdr) == 64)
-        printf("\n%s:     file format elf64-x86-64\n", filename);
-    else
-        printf("\n%s:     file format elf32-i386\n", filename);
+    printf("\n%s:     ", filename);
     print_architecture(_E(hdr, e_machine));
     print_all_flags(hdr, _E(hdr, e_type), _E(hdr, e_shnum));
     print_address(hdr, _E(hdr, e_entry));
