@@ -11,11 +11,11 @@ test_prog () {
     fi
 }
 
-mine_obj=$(./my_objdump $@ 2>&1 | cat -e)
-true_obj=$(objdump -fs $@ 2>&1 | cat -e)
+mine_obj=$(./my_objdump $@ |& cat -e 2>&1)
+true_obj=$(objdump -fs $@ |& cat -e 2>&1)
 
-mine_nm=$(./my_nm $@ 2>&1 | cat -e)
-true_nm=$(nm -p $@ 2>&1 | cat -e)
+mine_nm=$(./my_nm $@ |& cat -e 2>&1)
+true_nm=$(nm -p $@ |& cat -e 2>&1)
 
 test_prog "$mine_nm" "$true_nm" "nm"
 test_prog "$mine_obj" "$true_obj" "objdump"
